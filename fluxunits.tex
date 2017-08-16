@@ -1,0 +1,949 @@
+\documentclass{emulateapj}
+
+
+\slugcomment{DRAFT Version 0.1 of Aug 16, 2017}
+
+
+\newcommand\x         {\hbox{$\times$}}
+\newcommand\othername {\hbox{$\dots$}}
+\def\eq#1{\begin{equation} #1 \end{equation}}
+\def\eqarray#1{\begin{eqnarray} #1 \end{eqnarray}}
+\def\eqarraylet#1{\begin{mathletters}\begin{eqnarray} #1 
+                  \end{eqnarray}\end{mathletters}}
+\def\mic              {\hbox{$\mu{\rm m}$}}
+\def\about            {\hbox{$\sim$}}
+\def\Mo               {\hbox{$M_{\odot}$}}
+\def\Lo               {\hbox{$L_{\odot}$}}
+\def\comm#1           {{\tt (COMMENT: #1)}}
+\def\kms   {\hbox{km s$^{-1}$}}
+
+\usepackage{graphicx}
+\usepackage{xspace}
+
+\usepackage[usenames]{color} 
+%\newcommand{\B}[1]{{\color{blue} #1}}
+%\newcommand{\R}[1]{{\color{red} #1}}
+\newcommand{\G}[1]{{\color{red} #1}}
+\newcommand{\B}[1]{{#1}}
+\newcommand{\R}[1]{{\color{red}}}
+
+\begin{document}
+\title{On the Choice of LSST Flux Units (*** draft ***)} 
+\author{\v{Z}eljko Ivezi\'{c} and the LSST Project Science Team} 
+
+
+\begin{abstract}
+
+A linear measure of flux is preferred for LSST catalogs. This document
+provides some technical detail about this issue and proposes to adopt
+nano-Jansky as the standard LSST flux unit.  
+
+\end{abstract}
+
+
+\section{Introduction} 
+
+A linear measure of flux, not logarithmic magnitude scale, is preferred
+for LSST catalogs (e.g. forced fluxes can be negative due to stochastic
+background fluctuations). The choice of a particular flux unit is often
+conflated with issues of the interpretation of broad-band photometry 
+and systematic uncertainties in photometric calibration. This document
+summarizes most important technical details about these issues and 
+proposes to adopt nano-Jansky as the standard LSST flux unit. 
+
+Relevant technical discussion is provided in \S 2. Readers familiar 
+with broad-band photometry and photometric calibration can skip
+directly to \S 3, where  arguments are laid out for adopting nanoJansky 
+as the LSST flux unit. 
+
+
+\section{What flux will LSST measure?} 
+
+
+\subsection{CCDs count photons} 
+
+CCDs don't measure energy flux - CCDs count photons over some wavelength range set 
+by the overall atmosphere plus system throughput,  $S_b(\lambda)$ (defined as the probability 
+that a photon with wavelength $\lambda$, or frequency $\nu=c/\lambda$,  will be 
+transmitted through Earth's atmosphere and through the observing apparatus, and converted
+into an electron, including the effects of both optics, sensors and all other potential losses). 
+This quantity is {\it not}  defined per unit energy, or per unit wavelength (or frequency): 
+it is simply a dimensionless probability -- a number between 0 and 1. 
+
+Given a flux of photons per unit time, area and frequency interval, $N_\nu$, the 
+source counts, $C_b$ (in ADU), are proportional to 
+\begin{equation}
+\label{Nnu}
+        C_b \propto \int N_\nu(\nu) \, S_b(\nu) \, d\nu,
+\end{equation}
+with the constant of proportionality increasing with effective collecting area and exposure 
+time (index $b$ stands for ``bandpass''). 
+
+The integration in eq.~\ref{Nnu} is over frequency $\nu$ because the photon flux $N_\nu$ 
+is expressed per unit frequency. However, the running variable can be either  $\nu$ or 
+$\lambda$, and the choice of $\lambda$ is more convenient in this context. It is 
+easy to show, using $|d\nu/\nu| = |d\lambda / \lambda|$ (which follows from $\nu \lambda=c$),
+that an equivalent form of  eq.~\ref{Nnu} is
+\begin{equation}
+\label{Nnu2}
+         C_b\propto \int N_\nu(\lambda) \, S_b(\lambda) \, \lambda^{-2} \, d\lambda. 
+\end{equation}
+
+
+CCDs count photons but (unfortunately) don't record the photons' wavelength/frequency/energy.
+Nevertheless, it is possible to relate (calibrate) the measured source counts to energy flux -- though
+with a few important caveats, as described below. 
+
+ 
+
+\subsection{Definition of the specific flux} 
+
+Let us first  define $F_\nu$: the specific flux (flux per unit frequency, $\nu$) of an 
+object {\it at the top} of Earth's atmosphere. The SI units for $F_\nu$ are 
+W m$^{-2}$ Hz$^{-1}$ (= 10$^{3}$ erg cm$^{-2}$ s$^{-1}$). Because astronomical 
+fluxes are small, the IAU defined in 1973 a more convenient unit\footnote{The
+name honors radio astronomer Karl Jansky. Papers about the 3$^{rd}$ Cambridge 
+catalog of quasars published in 1950's already used $10^{-26} \, {\rm W m^{-2} Hz^{-1}}$
+as a standard flux unit (without calling it Jansky).},  Jansky (Jy): 
+\begin{equation}
+            1 \, {\rm Jy} = 10^{-26} \,\, {\rm W m^{-2} Hz^{-1}}.
+\end{equation} 
+
+The specific flux can also be defined per unit wavelength, $F_\lambda$, using energy 
+conservation $F_\nu |d\nu|=F_\lambda |d\lambda|$ and $\lambda \nu = c$.
+The choice of $F_\nu$, as opposed to $F_\lambda$, makes the flux conversion 
+to the AB magnitude scale (see below) more transparent, but otherwise is completely
+arbitrary. Similarly, the running variable can be either  $\lambda$ or $\nu$, and the 
+choice of $\lambda$ is more convenient.
+
+
+
+\subsection{From counts to the specific flux} 
+
+The flux of photons, $N_\nu$ (s$^{-1}$ m$^{-2}$ Hz$^{-1}$), is related to the specific flux $F_\nu$ as
+\begin{equation}
+\label{FNnu}
+                 F_\nu = h \nu \times N_\nu,  
+\end{equation}
+where $h\nu$ is the energy of a single photon with frequency $\nu$. Therefore,
+eq.~\ref{Nnu2} can be rewritten as
+\begin{equation}
+\label{Nnu3}
+         C_b\propto \int F_\nu(\lambda) \, S_b(\lambda) \, \lambda^{-1} \, d\lambda. 
+\end{equation}
+
+
+\subsection{Definition of broad-band flux} 
+
+As discussed in the LSST Science Requirements Document (Section 3.3.4), ``LSST is a 
+broad-band photometric system and will deliver calibrated in-band flux, $F_b$, 
+defined by 
+\begin{equation}
+\label{Fb}
+              F_b = \int{F_\nu(\lambda) \phi_b(\lambda) d\lambda},
+\end{equation}
+where $F_\nu(\lambda)$ is the specific flux of an object {\it at the top} of the atmosphere, 
+and $\phi_b(\lambda)$ is the normalized system response for the given band.'' This
+expression follows directly from eq.~\ref{Nnu3}. 
+
+The normalized system response is defined by 
+\begin{equation}
+\label{PhiDef}
+\phi_b(\lambda) = {S_b(\lambda) \lambda^{-1} \over \int{S_b(\lambda) \lambda^{-1} d\lambda}}.
+\end{equation}
+where $S_b(\lambda)$ is the overall atmosphere + system throughput.  It is defined by
+\begin{equation}
+\label{SDef}
+         S_b(\lambda) = S_b^{sys}(\lambda) \times S_b^{atm}(\lambda),
+\end{equation}
+where $S_b^{atm}(\lambda)$ is the {\it probability} that a photon 
+with wavelength $\lambda$ will be transmitted through the atmosphere, and
+$S_b^{sys}(\lambda)$ is the probability that the transmitted photon will be 
+converted into an electron by the system. Again, these quantities are
+dimensionless probabilities (numbers between 0 and 1). 
+
+As discussed above, the $\lambda^{-1}$ factor in eq.~\ref{PhiDef} reflects the fact that CCDs are 
+photon-counting devices: it comes from the conversion of energy per unit frequency
+into the number of photons per unit wavelength. 
+
+Note that the product $\phi_b(\lambda) d\lambda$ is dimensionless; it acts in eq.~\ref{Fb} as a 
+dimensionless weighting function and the unit for $F_b$ is {\it same} as for $F_\nu$
+(by construction).  In other words, eq.~\ref{Fb} doesn't represent ``integration under the 
+$F_\nu$ curve'' -- instead, $F_b$ is a ``weighted average'' of $F_\nu$ ($N_\nu$ is 
+``integrated under the curve'', not $F_\nu$). 
+
+Had we chosen to use $F_\lambda$ instead of $F_\nu$, an analog
+to eq.~\ref{Fb} would have been 
+\begin{equation}
+\label{FbL}
+              F_b^\ast = \int{F_\lambda(\lambda) \phi^\ast_b(\lambda) d\lambda},
+\end{equation}
+where
+\begin{equation}
+\label{PhiL}
+\phi^\ast_b(\lambda) = {S_b(\lambda) \lambda \over \int{S_b(\lambda) \lambda d\lambda}}.
+\end{equation}
+In this case, the calibrated flux $F_b^\ast$ has the same units as $F_\lambda$, and
+the weighting factor $\phi^\ast_b(\lambda) d\lambda$ is now skewed more towards 
+the red edge of the bandpass, compared to $\phi_b(\lambda) d\lambda$. Of course, 
+$C_b$ is same in both cases - it is only our (arbitrary) choice of flux calibration that 
+distinguishes $F_b$  and $F_b^\ast$. The only practical implication of the choice between 
+$F_b$  and $F_b^\ast$ is the type of the spectral energy distribution for which photometric 
+standardization correction for bandpass variation (see eq.~\ref{FbStd}) vanishes.  
+
+
+\subsection{The curse of broad-band flux} 
+
+There are a few consequences of the finite width of $\phi_b(\lambda)$ that need to be 
+emphasized (and are {\it not} the result of the specific choice for flux calibration). 
+
+Even for a temporally non-variable $F_\nu(\lambda)$,  $F_b$ will vary if 
+$\phi_b(\lambda)$ varies (even if the atmospheric and system properties
+are unchanged, variation of observing airmass can change $\phi_b(\lambda)$). 
+In order to standardize measurements to a 
+common standard system, one in which $F_b$ of a temporally non-variable 
+source would not vary (modulo random noise),  we need to define a {\it standard}
+normalized system response, $\phi^{std}_b(\lambda)$. In addition, we must know the {\it shape} 
+of the source spectral energy distribution (SED), $f_\nu(\lambda)$, defined by 
+\begin{equation}
+        F_\nu(\lambda) = F_o \, f_\nu(\lambda),
+\end{equation} 
+where $F_\nu(\lambda_o) = F_o$ and $f_\nu(\lambda_o) = 1$ for some fiducial 
+wavelength $\lambda_o$. Then we can compute standardized flux as 
+\begin{equation}
+\label{FbStd}
+F^{std}_b =  F_b \, {\int{f_\nu(\lambda)  \phi^{std}_b(\lambda) d\lambda }  \over   \int{ f_\nu(\lambda) \phi_b(\lambda) d\lambda }}. 
+\end{equation}
+Traditionally, corrections to the standard system are called {\it color terms}. Historically,
+they were obtained empirically (typically as linear functions of source color and airmass)
+rather than by using eq.~\ref{FbStd}. Assuming main-sequence stars and standard atmosphere, 
+plausible variations of airmass induce variations of $F_b$ around $F^{std}_b$ of a few percent. 
+
+Without knowing, or assuming, $f_\nu(\lambda)$, it is {\it mathematically impossible}  to 
+standardize measurements $F_b$ -- this is the ``curse'' of broad-band fluxes
+(note that in the special case of a flat SED, $f_\nu(\lambda)$ = constant, $F^{std}_b =  F_b$;
+had we chosen $F_b^\ast$ instead of $F_b$, the standardization correction would vanish for
+$f_\nu(\lambda) = \lambda^2$, that is, for $f_\lambda(\lambda)$ = constant). 
+This ``curse'' cannot be avoided whatever is the flux calibration choice (i.e. $F_\nu$ vs. $F_\lambda$);
+the ``problem'' is that CCDs don't measure integrated flux -- they count photons and
+don't record the photons' wavelength.
+
+
+\subsection{Standardized fluxes} 
+ 
+For each flux measurement, LSST will report both $F_b$ and $\phi_b$ (with $\phi^{std}_b(\lambda)$ 
+pre-defined and always known). There is also need to report standardized flux
+computed using eq.~\ref{FbStd} (e.g. to help users construct color-color and color-magnitude
+diagrams, or to search for variable sources). There are at least two options for choosing $f_\nu(\lambda)$:
+i) assume a flat SED ($F^{std}_b =  F_b$, i.e. effectively no correction is applied), and ii) assume 
+the best possible estimate of object's SED, using available LSST color measurements and possibly 
+other information. 
+
+Neither choice is perfect: the first choice, while simple, does not account for the variation of $F_b$ around
+$F^{std}_b$ due to changes of $\phi_b$ (except in case of flat SED), while the second choice
+can be grossly incorrect (e.g. when SED type is incorrectly chosen, such as stellar SED instead
+of quasar or supernova SED). Therefore, it is important to enable users i) to undo whatever default 
+flux standardization correction was used, and ii) to easily re-do the computation with a different choice 
+of the spectral energy distribution (e.g. for multiple hypothesis testing, such as distinguishing
+``star'', ``quasar'', and ``supernova'' SEDs, or galaxy SEDs of different intrinsic types and at 
+different redshift). The current baseline LSST plan is option ii). 
+
+% LSST will provide corresponding bandpass for each photometric measurement, while the
+% normalization will be fixed by providing flux under the assumption of flat SED. 
+% DO WE NEED TO SEPARATE THESE TWO TERMS? 
+
+
+\subsection{Some pitfalls when interpreting measured fluxes}
+
+When comparing a model for the specific flux, $F_\nu^\ast(\lambda)$, to  
+measurements $F_b$, the proper way to proceed is to compute the model prediction 
+for $F_b$ using eq.~\ref{Fb}
+\begin{equation}
+\label{FbModel}
+             F^{model}_b = \int{F_\nu^\ast(\lambda) \phi_b(\lambda) d\lambda},
+\end{equation}
+and then compare $F^{model}_b$ to measurement $F_b$.  
+When measurements $F_b$ have already been standardized as $F^{std}_b$, 
+this data vs. model comparison (e.g. photometric redshift estimation) can 
+suffer from systematic errors when SED shape, $f_\nu(\lambda)$,  assumed 
+for flux standardization differs from the shape of $F_\nu^{model}(\lambda)$,
+{\it even when} $\phi_b(\lambda)$ was substituted by $\phi^{std}_b(\lambda)$. 
+
+Flux measurements ($F_b$ or $F^{std}_b$) are often interpreted as corresponding to 
+$F_\nu(\lambda_{eff})$, at some effective wavelength, $\lambda_{eff}$, and compared 
+to model flux $F_\nu^\ast(\lambda_{eff})$. This practice usually results in systematic
+errors because $\lambda_{eff}$ is a function of $f_\nu(\lambda)$, and thus there
+is no universal value of $\lambda_{eff}$ applicable to all sources. 
+
+
+\subsection{Calibration of counts to get fluxes} 
+
+Image processing pipelines, more precisely object measurement pipelines/algorithms,
+will produce counts, $C_b$ (together with $\phi_b$). It is assumed that all the relevant 
+instrumental and other effects had been taken into account such that the following 
+relationship is valid
+\begin{equation} 
+               F_b = \alpha \,  C_b,
+\end{equation} 
+for all sources from some judiciously chosen ``calibration patch'' (spatial variation of $\alpha$ over
+the patch is assumed to be corrected for, though the above equation could be easily
+generalized; in principle, this  ``calibration patch'' could correspond to the entire 
+sky if all $C_b$ were ``reduced to the same system'' using self-calibration). 
+
+A set of calibration stars will be available to estimate $\alpha$: for these stars 
+we (assume that we) will know broad-band flux in an arbitrary calibration bandpass
+$\phi_{calib}(\lambda)$ (e.g. in Gaia's bandpasses)
+\begin{equation}
+\label{FbCalib}
+             F_{calib} = \int{F_\nu(\lambda) \phi_{calib}(\lambda) d\lambda}.
+\end{equation}
+We also assume that we will have a good knowledge of the SED shape,
+$f_\nu(\lambda)$ for calibration stars. The implied fluxes of calibration stars corresponding 
+to bandpass $b$, $F_b^{calib}$ can then be computed analogously to eq.~\ref{FbStd}, using 
+$\phi_b(\lambda)$ and $\phi_{calib}(\lambda)$,
+\begin{equation}
+\label{FbStdCalib}
+F^{calib}_b =  F_{calib} \, {\int{f_\nu(\lambda)  \phi_b(\lambda) d\lambda }  \over   \int{ f_\nu(\lambda) \phi_{calib}(\lambda) d\lambda }}. 
+\end{equation}
+
+
+Finally, the calibration coefficient $\alpha$ (corresponding to photometric zeropoint when
+working in magnitude space) is computed from
+\begin{equation} 
+                 F_b^{calib} = \alpha \,  C_b^{calib},
+\end{equation} 
+by the usual least squares minimization, or perhaps using a more robust statistical method. 
+
+
+\subsection{AB magnitudes} 
+Traditionally, the in-band flux is reported on a magnitude scale, and LSST has adopted
+AB magnitudes defined as 
+\begin{equation}
+\label{ABmag}
+              m^{AB}_b = -2.5\log_{10}\left({F_b \over F_{AB}}\right).
+\end{equation}
+where $F_{AB}$ = 3631 Jy. 
+The same expression applies to $F^{std}_b$, or any other flux. 
+
+
+
+\section{The choice of flux unit}  
+
+Most astronomical surveys, especially space-based surveys and surveys
+at wavelengths other than optical, used Jansky as the flux unit.  One notable
+exception is SDSS, which used maggies. 
+
+
+\subsection{The curious case of maggies} 
+
+In analogy with eq.~\ref{ABmag}, magnitudes can be defined\footnote{
+See https://www.sdss3.org/dr8/algorithms/magnitudes.php} as 
+\begin{equation}
+\label{maggie}
+               m \equiv - 2.5\log_{10}\left({\rm maggie}\right),
+\end{equation}
+where ``maggie'' is the source flux expressed in some arbitrary
+units,
+\begin{equation}
+\label{maggie2}
+               {\rm maggie} \equiv {{\rm flux } \over F_o}. 
+\end{equation}
+In case of AB magnitudes, eq.~\ref{ABmag} implies that maggie is 
+flux measured in units of 3631 Jy, 
+\begin{equation}
+\label{eq:defmaggie} 
+           {\rm maggie} = {{\rm flux \, (Jy)} \over {\rm 3631 \, Jy}}. 
+\end{equation} 
+In practice (e.g. SDSS), a more convenient
+quantity is nano-maggie, which is flux measured in units of 3631 nanoJy.
+
+
+Maggies were introduced as an alternative flux unit in order to emphasize
+that zeropoints for astronomical flux calibration change often -- and 
+presumably much more often than the actual counts measurement. Such 
+was the case of SDSS, where the sky was imaged essentially once and with
+a precision better then the accuracy of calibration photometry (i.e. at 
+the bright end systematic photometric uncertainties were larger than 
+random uncertainties). It was anticipated that photometric zeropoints 
+would eventually improve and the dataset recalibrated.  But it needs to 
+be noted that fluxes also change when other aspects of calibration change
+(non-linearity and cross-talk corrections, flatfields, standard apertures, 
+point-spread function, etc.) -- photometric zeropoints are only one of 
+many calibration factors. Indeed, it turned out that in practice most 
+SDSS users would simply convert maggies to Jansky and AB magnitudes
+(and the SDSS Project curated a list of five best estimates of the systematic
+flux offsets in the $ugriz$ bands introduced by this conversion). 
+ 
+It is sometimes claimed that maggies have the benefit of not pretending 
+to exactly correspond to physical units (Jy). This somewhat philosophical
+advantage was not born in practice because of the immediate users' 
+flux conversion to Jansky mentioned above. 
+
+
+\subsection{Case for Jansky as the preferred flux unit} 
+
+There is fundamentally no difference between the flux measurements discussed
+here and any other physical measurement that is subject to random and systematic
+uncertainties. It is rather common to report both types of measurement uncertainties
+in physical sciences. Indeed, the LSST  Science Requirements Document (Section 3.3.4)
+explicitly addresses the issue of systematic uncertainties in photometry and
+introduces the separation of ``internal absolute'' calibration accuracy 
+from ``external absolute'' ” calibration accuracy and from the offset from the
+overall flux scale. The deviation of the LSST system from a perfect AB system
+(that is, the systematic error in calibrating the flux scale to correspond to Jansky)  
+$\Delta_m$, is expressed relative to the fiducial $r$ band as 
+\begin{equation}
+             \Delta_m = \Delta_r + \Delta_{mr}, 
+\end{equation}
+(eq.~9 from the SRD), where $\Delta_r$ describes overall systematic uncertainty 
+in the LSST flux scale calibration (a single number for the whole survey). The 
+``band-to-band zeropoint errors'' $\Delta_{mr}$ are thus decoupled from the overall 
+``gray scale'' offset $\Delta_{r}$, which minimizes error covariances. Similarly to SDSS, 
+a variety of methods will be used to assess likely values of $\Delta_{mr}$ and 
+$\Delta_r$ for each LSST Data Release. 
+
+To summarize, the case for Jansky as the preferred LSST flux unit, as opposed
+to maggies, derives from the following arguments: 
+
+\begin{enumerate}
+\item There isn't that much difference between the two options; in particular,  the key 
+decision is to report physical flux on a linear scale and whether the flux unit is Jy 
+or 3631 Jy is of secondary importance.  Since Jy is widely used in astronomy, it seems 
+wise to give it preference over much less utilized maggies. For the faint fluxes
+probed by LSST, a more convenient unit is nanoJansky (nJy). The AB magnitude 
+values of 27.5 (fiducial coadded image depth)  and 24.5 (fiducial single-image depth) 
+correspond to 36.3 nJy and 575 nJy. 
+
+\item Irrespective of which flux unit is chosen, the changes of the photometric 
+calibration zeropoints will affect whatever is reported, whether it is maggie, $mag^{AB}$, 
+$mag^{Vega}$, or nJy, as long as it is implied that physical flux is reported. Only if
+truly relative measures of flux are reported (e.g. with respect to Vega, but without knowing 
+what calibrated Vega fluxes really are), will magnitudes (but not fluxes in maggies or 
+nJy) stay unchanged. However, in this case rather ugly details are hidden (e.g., how 
+exactly was the relative flux calibrated and how stable is the flux scale), and in the context 
+of sub-1\% photometry this case appears to be of historical interest only. 
+\item ``But: we are measuring broad-band flux, and not the specific flux!''  Well, 
+yes, this is an unfortunate fact. However, it is not relevant for the maggie vs. Jy discussion. 
+It is impossible (mathematically!) to relate these two flux measures without knowing 
+the source SED, whether we use magnitudes, maggies or Jy! 
+\item When an estimate of the source SED is available, the transformation from
+the broad-band flux to the specific flux is dimensionless and thus obviously independent 
+of the choice for flux units (again, the broad band flux vs. the specific flux issues do not provide
+arguments for maggie vs. Jy discussion).
+\end{enumerate}
+
+In conclusion, the proposal is to calibrate LSST fluxes to a physical scale (e.g. using
+Gaia catalogs), adopt nJy as the flux unit, and report the best available estimates of 
+$\Delta_{mr}$ and $\Delta_r$ with each LSST Data Release. In particular, $\Delta_r$ 
+will describe the systematic flux uncertainty --  the discrepancy between an ideal 
+flux scale in Jansky and ``Jansky'' scale reported by LSST. 
+
+
+
+{\it Acknowledgments:} this document has greatly benefited from discussions between
+the LSST Project Science Team members and Tim Axelrod, Michael Blanton, David 
+Burke, Arjun Dey, Mark Dickinson, Doug Finkbeiner, Lynne Jones,  Jeff Newman, 
+John Parejko, David Schlegel, and Peter Yoachim,
+
+
+
+\end{document} 
+
+
+
+Arjun: 
+The passion on this subject is quite remarkable - and the boundaries drawn 
+appear to be whether someone was brought up inside SDSS or not. 
+The argument here is about the zero point of the quoted number, not the principle. 
+
+Jeff Newman: the Jansky was defined to be 10^-26 W/m^2/Hz by the IAU in 1973.
+Note: the 3C people used 10^-26 W/m^2/Hz as the standard unit in their papers 
+in the 1950’s, without calling them Janskys. 
+
+Fink: If we are looking for the simplest possible linear flux system that is related 
+to what astronomers know and love, and retains a hint to the user that broadband 
+photometry is broadband AND is poorly tied to physical units, mgy make a lot of 
+sense.  To use Jy is to overload the definition of Jy rather badly. 
+
+ZI: there are always random and systematic errors. 
+
+Arjun: I agree with Jeff and Zeljko … we can either spend time saying "well, but they aren’t 
+*really* Jy, they are just sorta Jansky-like things” or saying “well, these are nanomaggies and 
+to convert to something like AB magnitudes, use a constant of 22.5, but these are not really 
+AB magnitudes but AB magnitude like things”.
+
+
+ZI thinks these are fallacies: 
+
+Maggies also have the benefit that they don’t pretend to exactly correspond
+to X watt/s.  If one is in Jy, one would be obligated to change all your fluxes
+if you get a better understanding of your zero-points.
+
+same for maggies: they are defined in flux scale too
+
+> concern about fluxes changing when you better understand your zero points.  
+> that’s handled with magnitudes; if you want something linear, use maggies 
+
+but  magnitudes also change when other aspects of calibration change (linearities, 
+standard apertures, etc.) - zero points are the only factor here 
+
+
+if maggies are used, most people will just convert them to microJy or AB anyway. 
+
+if mags are -2.5log(f/f0), maggies are just f/f0,
+   
+      magnitude = -2.5*log(maggie) 
+
+nanomaggies doc: 
+https://www.sdss3.org/dr8/algorithms/magnitudes.php
+http://data.sdss3.org/datamodel/files/PHOTO_SWEEP/RERUN/calibObj.html
+
+If you want to see the sorts of misconceptions one can be led into by
+thinking about broad-band photometry wrongly, see this:
+http://wise2.ipac.caltech.edu/docs/release/prelim/expsup/sec4_3g.html#FluxCC
+
+
+Fink: somehow maggie accounts for the broadband flux, but Jy doesn’t?? 
+Our backends do *not* give us \int_{band} I_\nu d\nu.  If they did, I would push
+for Jy.  Instead, the quantity they give us relates to \int_{band} I_\nu d\nu in a way 
+that depends on the SED of the source.  
+
+Another misunderstanding: 
+> I must say that this is a good argument for nMgy. I have used such units in the past, 
+> and the convenience of the one line transformation into magnitudes with a constant 
+> 22.5 zero point is pleasant.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+In order to interpret photometric measurements at the error level
+specified below ($<$1\%), both $S_b^{sys}(\lambda)$ and $S_b^{atm}(\lambda)$
+must be known with sufficient precision. Experience with precursor surveys, 
+such as SDSS, suggest that the dependence of both functions on
+wavelength have to be directly measured to break the 1\% photometric error 
+barrier (especially for sources with complex spectral energy distributions,
+such as supernovae). While the individual normalizations of $S_b^{sys}(\lambda)$ and 
+$S_b^{atm}(\lambda)$ are {\it not} required (c.f. eq.~\ref{PhiDef}) to 
+interpret measurements using eq.~\ref{Fb}, the flux scale (calibration) 
+errors affect the reported values of $F_b$ (i.e. $m_b$). Therefore, 
+for each photometric measurement both $F_b$ and $\phi_b(\lambda)$ 
+will be reported, together with their estimated uncertainties. These 
+two quantities will capture fundamental information included in LSST
+measurements, and will enable accurate transformation of $F_b$ 
+to systems with similar $\phi_b(\lambda)$ when the source spectral
+energy distribution is known or assumed. In particular, corrections
+to some standardized ``average'' LSST system, $\phi_b^{std}(\lambda)$,
+will be defined during the commissioning period for the most relevant
+spectral energy distributions (such as main sequence stars and normal 
+galaxies). 
+
+
+The requirements for photometric calibration accuracy are specified using 
+the following error decomposition (valid in the limit of small errors)
+\begin{equation}
+\label{photoSysErr}
+ m^{std}_{cat} = m^{std}_{true} + \sigma + \delta_m(x,y,\phi^{std},\alpha,\delta,SED,t) + \Delta_m,
+\label{eq:mstdcat}
+\end{equation}
+where $m^{std}_{true}$ is the true magnitude defined by eqs.~\ref{Fb} and
+\ref{ABmag}, $m^{std}_{cat}$ is the cataloged LSST magnitude, \R{both evaluated using
+$\phi^{std}$,} $\sigma$ is the random 
+photometric error (including random calibration errors and count extraction
+errors), and $\Delta_m$ is the overall (constant) offset of the 
+internal survey system from a perfect AB system (the six values of $\Delta_m$ 
+are equal for {\it all} the cataloged objects). Here, $\delta_m$ describes 
+the various systematic dependencies of the internal zeropoint error around 
+$\Delta_m$, such as position in the field of view ($x,y$), the normalized 
+system response ($\phi$), position on the sky ($\alpha, \delta$), and
+the source spectral energy distribution ($SED$). Note that the average of 
+$\delta_m$ over the cataloged area is 0 by construction. 
+
+This error decomposition decouples ``internal absolute'' calibration 
+(i.e. producing an internally consistent system by minimizing $\delta_m$), 
+from that of ``external absolute'' calibrations (i.e. determining the six 
+$ugrizy$ $\Delta_m$  values for the LSST survey). Furthermore, the deviation 
+of the LSST system from a perfect AB system, $\Delta_m$, can be expressed 
+relative to a fiducial band, say $r$, 
+\begin{equation}
+            \Delta_m = \Delta_r + \Delta_{mr}.
+\end{equation}
+
+The motivation for this separation is twofold. First, $\Delta_{mr}$ can
+be constrained by considering the colors (spectral energy distributions) 
+of objects, {\it independently from the overall flux scale} (this can 
+be done using both external observations and models). Second, there are
+few science programs that crucially depend on knowing the ``gray 
+scale'' offset, $\Delta_r$, at the 1-2\% level. On the other hand, 
+knowing the ``band-to-band'' offsets, $\Delta_{mr}$, with such an 
+accuracy is {\it critically important} for many applications (e.g., 
+photometric redshifts of galaxies, type Ia supernovae cosmology, testing 
+of stellar and galaxy SED models). 
+
+
+
+
+
+
+\section{From Flux to Counts}
+\label{sec:photons2counts}
+
+We first consider how the photons from an astronomical object make their
+way to the detector and are converted into counts (ADUs), paying attention to the various
+temporal or spatial scales for variability might arise in the LSST
+system to affect the final ADU counts. 
+
+Given $F_\nu(\lambda, t)$ --
+the specific flux\footnote{Hereafter, the units for specific
+flux (flux per unit frequency  are Jansky (1 Jy = 10$^{-23}$ erg cm$^{-2}$ s$^{-1}$
+Hz$^{-1}$). The choice of $F_\nu$ vs. $F_\lambda$ makes the flux
+conversion to the AB magnitude scale more transparent, and the choice
+of $\lambda$ as the running variable is more convenient than the
+choice of $\nu$. Note also, while $F_\nu(\lambda,t)$ (and other
+quantities that are functions of time) could vary more quickly than
+the standard LSST exposure time of 15s, it is assumed that all such
+quantities are averaged over that short exposure time, so that $t$
+refers to quantities that can vary from exposure to exposure. }
+(flux per unit frequency) of an astronomical object at
+the top of the atmosphere -- at a position described by ($alt$,$az$),
+the total specific flux from the object transmitted through the atmosphere to the telescope pupil is
+\begin{equation}
+\label{eqn:Fpupil}
+   F_\nu^{pupil}(\lambda,alt,az,t) = F_\nu(\lambda, t) \, S^{atm}(\lambda,alt,az,t),
+\end{equation}
+where $S^{atm}(\lambda,alt,az)$ is the (dimensionless) probability that a photon of 
+wavelength $\lambda$ makes it through the atmosphere,
+\begin{equation}
+\label{eqn:atmTau}
+   S^{atm}(\lambda,alt,az,t)   = {\rm e}^{-\tau^{atm}(\lambda,alt,az,t)}.
+\end{equation}
+Here $\tau^{atm}(\lambda,alt,az)$ is the optical depth of the
+atmospheric layer at wavelength $\lambda$ towards the position
+($alt$,$az$). Observational data \citep{Stubbs2007b, Burke2010b} show
+that the various atmospheric components which contribute to absorption
+(water vapor, aerosol scattering, Rayleigh scattering and molecular
+absorption) can lead to variations in $S^{atm}(\lambda,t)$ on the
+order of 10\% per hour. Clouds represent an additional gray (non-wavelength
+dependent) contribution to $\tau^{atm}$ that can vary even more
+rapidly, on the order of 2--10\% of the total extinction at $1^{\circ}$
+scales within minutes \citep{Ivezic2007}.
+
+Given the above $F_\nu^{pupil}(\lambda,alt,az,t)$, the total ADU
+counts transmitted from the object to a footprint within the field of
+view at ($x$, $y$) can be written as
+\begin{equation}
+\label{eqn:Fpupil2counts}
+    C_b(alt, az, x,y,t) = C \, \int_0^\infty {F_\nu^{pupil}(\lambda,alt,az,t) \, S_b^{sys}(\lambda,x,y,t) \lambda^{-1}d\lambda}.
+\end{equation}
+Here, $S_b^{sys}(\lambda,x,y,t)$ is the (dimensionless) probability
+that a photon will pass through the telescope's optical path to be
+converted into an ADU count, and 
+includes the mirror reflectivities, lens transmissions, filter
+transmissions, and detector sensitivities. The term
+$\lambda^{-1}$ comes from the conversion of energy per unit frequency
+into the number of photons per unit wavelength and $b$ refers to a particular filter, $ugrizy$. The
+dimensional conversion constant $C$ is
+\begin{equation}
+\label{eqn:Cconstant}
+        C = {\pi D^2 \Delta t \over 4 g h }  
+\end{equation}
+where $D$ is the effective primary mirror diameter, $\Delta t$ is the
+exposure time, $g$ is the gain of the readout electronics (number of
+photoelectrons per ADU count, a number greater than one), and $h$ is
+the Planck constant. The wavelength-dependent variations in
+$S_b^{sys}$ generally change quite slowly in time; over periods of
+months, the mirror reflectance and filter transmission will degrade as
+their coatings age. A more rapidly time-varying wavelength-dependent
+change in detector sensitivity (particularly at very red wavelengths
+in the $y$ band) results from temperature changes in the detector, but
+only on scales equivalent to a CCD or larger.  There will also be
+wavelength-dependent spatial variations in $S_b^{sys}$ due to
+irregularities in the filter material; these are required by the
+camera specifications to vary 
+slowly from the center of the field of view to the outer edges.  The
+equivalent bandpass shift can be no more than 2.5\% of the effective
+wavelength of the filter. Wavelength-independent (gray-scale)
+variations in $S_b^{sys}$ can occur more rapidly, on timescales of a
+day for variations caused by dust particles on the filter or dewar
+window, and on spatial scales ranging from the amplifier level,
+arising from gain changes between amplifiers, down to the pixel level,
+in the case of pixel-to-pixel detector sensitivity variations.
+
+From equation~\ref{eqn:Fpupil2counts} and the paragraphs above, we can
+see that the generation of counts $C_b(alt,az,x,y,t)$ from photons is
+imprinted with many different effects, each with different variability
+scales over time, space, and wavelength. In particular the
+wavelength-dependent variability (bandpass shape) is
+typically much slower in time and space than the gray-scale variations
+(bandpass normalization). These different scales of variability
+motivate us to separate the measurement of the normalization of
+$S_b^{sys}$ and $S^{atm}$ from the measurement of the
+wavelength-dependent shape of the bandpass.
+
+\subsection{Bandpasses and Associated Magnitudes}
+\label{sec:phi}
+
+This then leads us to introduce a `normalized bandpass response
+function', $\phi_b^{obs}(\lambda,t)$, that represents the true
+bandpass response shape for each observation,
+\begin{equation}
+\label{eqn:PhiDef}
+   \phi_b^{obs}(\lambda,t) =  {
+     {S^{atm}(\lambda,alt,az,t)\, S_b^{sys}(\lambda,x,y,t) \,
+       \lambda^{-1}} \over
+     \int_0^\infty { {S^{atm}(\lambda,alt,az,t) \,
+         S_b^{sys}(\lambda,x,y,t) \, \lambda^{-1}} \,d\lambda}}.
+\end{equation}
+Note that $\phi_b$ only represents {\it shape} information about the
+bandpass, as by definition
+\begin{equation}
+\int_0^\infty {\phi_b(\lambda)  d\lambda}=1. 
+\end{equation}
+Using $\phi_b^{obs}(\lambda, t)$ we can represent the
+in-band flux at the top of the atmosphere for each observation as
+\begin{equation}
+\label{eqn:Fb}
+F_b^{obs}(t) = \int_0^\infty {F_\nu(\lambda,t) \,\phi_b^{obs}(\lambda,t) \, d\lambda},
+\end{equation}
+where the normalization of $F_b(t)$ corresponds to the top of the
+atmosphere. Unless $F_\nu(\lambda,t)$ is a flat ($F_\nu(\lambda)=$
+constant) SED, $F_b^{obs}$ will vary with changes in
+$\phi_b^{obs}(\lambda,t)$ due simply to changes in the bandpass shape,
+such as changes with position in the focal plane or differing
+atmospheric absorption characteristics, {\it even if the source is
+non-variable}.
+
+To provide a reported $F_b^{std}(t)$ which is constant for
+non-variable sources, we also introduce the `standardized bandpass response
+function', $\phi_b^{std}(\lambda)$, a curve that will be defined before
+the start of LSST operations (most likely during
+commissioning). $\phi_b^{std}(\lambda)$ represents a typical hardware
+and atmospheric transmission curve, roughly minimizing the average difference between
+the varying $\phi_b^{obs}(\lambda,t)$ and the standard bandpass.
+Now, 
+\begin{equation}
+\label{eqn:stdFlux}
+F_b^{std}(t) = \int_0^{\infty} {F_\nu(\lambda,t) \,
+  \phi_b^{std}(\lambda) \, d\lambda}, 
+\end{equation}
+is a constant value for non-variable sources. 
+
+We define a `natural magnitude' 
+\begin{equation}
+\label{eqn:natmag}
+m_b^{nat}  = -2.5\, log_{10} \left( {F_b^{obs} \over F_{AB}}  \right)
+\end{equation}
+where $F_{AB}$ = 3631 Jy. The natural magnitude will
+vary from observation to observation as $\phi_b^{obs}(\lambda,t)$
+changes, even if the source itself is non-variable. The natural
+magnitude can be transformed to a `standard magnitude', $m_b^{std}$, as
+follows:
+\begin{eqnarray}
+m_b^{nat} & = &-2.5\, log_{10} \left( {F_b^{obs} \over F_{AB}} \right) \\
+& = & -2.5 \, log_{10} \left( { \int_0^\infty {F_\nu(\lambda,t) \,
+    \phi_b^{obs}(\lambda,t) \, d\lambda} \over F_{AB} }  \right) \\
+& = & -2.5 \, log_{10} \, \left( \left( { \int_0^\infty {F_\nu(\lambda,t) \,
+    \phi_b^{obs}(\lambda,t) \, d\lambda} \over \int_0^\infty {F_\nu(\lambda,t) \,
+    \phi_b^{std}(\lambda,t) \, d\lambda}} \right) \, \left( {\int_0^\infty {F_\nu(\lambda,t) \,
+    \phi_b^{std}(\lambda,t) \, d\lambda} \over F_{AB}} \right) \right) \\
+m_b^{nat} & = & \Delta m_b^{obs} + m_b^{std} \\
+\label{eqn:Delta_m}
+\Delta m_b^{obs} & = & -2.5 \, log_{10} \,  \left( { \int_0^\infty {F_\nu(\lambda,t) \,
+    \phi_b^{obs}(\lambda,t) \, d\lambda} \over \int_0^\infty {F_\nu(\lambda,t) \,
+    \phi_b^{std}(\lambda,t) \, d\lambda}} \right)
+\end{eqnarray}
+where $\Delta m_b^{obs}$ varies with the {\it shape} of the source
+spectrum, $F_\nu(\lambda,t)$ and the {\it shape} of the bandpass
+$\phi_b^{obs}(\lambda,t)$ in each observation. Note that $\Delta
+m_b^{obs}=0$ for flat (constant) SEDs, as the integral of
+$\phi_b(\lambda)$ is always one.  
+
+The natural and standard magnitudes can be tied back to the counts
+produced by the system by adding the correct zeropoint offsets. As
+$\Delta m_b^{obs}$ removes all wavelength dependent variations in $m_b^{std}$,
+\begin{eqnarray}
+\label{eqn:mag2counts}
+m_b^{std} & = & m_b^{inst} \, - \Delta m_b^{obs} + Z_b^{obs} \\
+ & \equiv & m_b^{corr} + Z_b^{obs} \\
+ m_b^{inst} & = & -2.5\,log_{10}(C_b^{obs})
+\end{eqnarray}
+
+
+The zeropoint correction here, $Z_b^{obs}$, contains only gray-scale
+{\it normalization} effects, such as variations due to the flat field
+or cloud extinction.  The SED corrected magnitude, $m_b^{corr}$, is the input to the Self Calibration block in 
+Figure \ref{fig:overview_flowchart1}, and $m_b^{std}$ is its output.
+
+To summarize the various magnitudes utilized, and their associated fluxes:
+
+\begin{itemize}
+\item{$m_b^{inst}$, the instrumental magnitude.  $m_b^{inst} = -2.5 log10(C_b^{obs})$, where $C_b^{obs}$ are the instrumental counts (ADU) that are attributed to the object}
+\item{$m_b^{nat}$, the natural magnitude.  This is the magnitude in the AB system that would be measured for the object if it were measured through the actual normalized system bandpass, $\phi_b^{obs}(\lambda)$, at the top of the atmosphere.  This bandpass varies
+from exposure to exposure.  See equations \ref{eqn:Fb} and \ref{eqn:natmag}. $m_b^{nat} = m_b^{inst} + Z_b^{obs}$}
+\item{$m_b^{std}$}, the standard magnitude.  This is the magnitude in the AB system that would be measured for the object if it were measured through the standard normalized system bandpass, $\phi_b^{std}(\lambda)$, at the top of the atmosphere.  This bandpass is 
+selected as part of the survey design, and does not vary.  See equation \ref{eqn:stdFlux}. 
+\item{$m_b^{corr}$, the SED corrected instrumental magnitude.  This is the standard magnitude, but with an unknown gray zeropoint correction, which will be removed by self calibration.  These magnitudes are the input to self calibration. $m_b^{corr} = m_b^{inst} + \Delta m_b^{obs}$}
+\end{itemize}
+
+
+
+
+
+\vskip 0.3in
+\appendix
+\leftline{\bf A.1  From Photons to Counts} 
+
+Given $F_\nu(\lambda)$, the specific flux of an object {\it at the top} of the atmosphere,
+at a position described by ($alt$,$az$), the flux transmitted through the atmosphere 
+to the telescope pupil is 
+\begin{equation}
+\label{eqn:Fpupil}
+                      F_\nu^{pupil}(\lambda,alt,az) = F_\nu(\lambda) \, S^{atm}(\lambda,alt,az),
+\end{equation}
+where $S^{atm}(\lambda,alt,az)$ is the (dimensionless) probability that a photon of 
+wavelength $\lambda$ makes it through the atmosphere,
+\begin{equation}
+\label{eqn:atmTau}
+                        S^{atm}(\lambda,alt,az)   = {\rm e}^{-\tau^{atm}(\lambda,alt,az)}.
+\end{equation}
+Here $\tau^{atm}(\lambda,alt,az)$ is the optical depth of the atmospheric layer at wavelength 
+$\lambda$ towards the position ($alt$,$az$). Note that clouds represent an additive 
+contribution to $\tau^{atm}$, and can introduce a strong variation of $\tau^{atm}$ on small 
+angular scales (for ``photometric'' atmospheric conditions, most of $\tau^{atm}$ variation is 
+a smooth function of $alt$, or airmass). While both $F_\nu(\lambda)$ and $\tau^{atm}(\lambda,alt,az)$ 
+can be functions of time, it is assumed hereafter that all quantities are averaged over some 
+short (exposure) time. 
+
+Given $F_\nu^{pupil}(\lambda,alt,az)$,  the counts recorded at a position within the field of view
+described by ($x$,$y$) can be written as 
+\begin{equation}
+\label{eqn:Fpupil2counts}
+    C_b(alt,az,x,y) = C \, \int_0^\infty {F_\nu^{pupil}(\lambda,alt,az) \, S_b^{sys}(\lambda,x,y) \lambda^{-1}d\lambda}.
+\end{equation}
+Here, $S_b^{sys}(\lambda,x,y)$ is the (dimensionless) probability that a photon will be converted 
+into an ADU count, and the term $\lambda^{-1}$ comes from the conversion of energy per unit frequency 
+into the number of photons per unit wavelength ($b=ugrizy$). The dimensional conversion constant $C$ is  
+\begin{equation}
+\label{eqn:Cconstant}
+        C = {\pi D^2 \Delta t \over 4 g h }  
+\end{equation}
+where $D$ is the effective primary mirror diameter, $\Delta t$ is the exposure time, $g$ is the gain of the 
+readout electronics (number of photoelectrons per ADU count, a number greater than one that should
+really be called inverse gain), and $h$ is the Planck constant. The system response function, 
+$S_b^{sys}(\lambda,x,y)$, includes the (multiplicative) effects of the mirror reflectance, transmission of
+the lenses and filters, and efficiency of the camera sensors. It is assumed hereafter that the
+pixel-to-pixel variation of the sensor efficiency is treated via flatfields, and that the dependence 
+of $S_b^{sys}(\lambda,x,y)$ on ($x$,$y$) refers to scales sufficiently larger than a seeing disk. 
+
+{\it Note that this assumption implies that flatfield variation on small spatial scales
+is not a function of wavelength!}  In more quantitative detail, it is assumed that
+the instrument response $T$ is a separable function of position and wavelength:
+\begin{equation}
+               T_b^{sys}(x,y,\lambda) = FF_b(x,y) \, S_b^{sys}(\lambda), 
+\end{equation}
+where $(x,y)$ are pixel coordinates. Here we can define $FF_b(x,y)$ to be
+self-normalized, and its main purpose is to flatten the pixel-to-pixel
+response on small (up to CCD size) scales.
+
+Of course, $S_b^{sys}(\lambda)$  is also allowed to vary with position,
+but only on angular scales much {\it larger} than the seeing disk. That is, we are
+separating the small-scale (sub-seeing disk) variation into $FF_b$ and the
+large-scale variation that {\it we can control with stars} into $S_b^{sys}$. 
+
+The assumption that the small-scale $FF_b$ variation is not a function of wavelength
+enables the extraction of counts by DM pipelines without knowing the color of a source. 
+Even if this is not strictly true, we should be able to correct for these small
+effects a posteriori (and stars will be observed at different positions
+so the impact on an ensamble of measured should be minimal).
+
+The extracted counts depend on the applied aperture weighting scheme. In the context of 
+photometric calibration discussed here, only point sources with optimally extracted counts
+are considered. In particular, it is assumed that aperture correction, which corrects the
+so-called point-spread-function counts to an infinitely large aperture will be determined
+as part of regular image processing by DM pipelines. Of course, the impact of errors in aperture
+correction on resulting photometric calibration will also be studied with this framework
+(beginning with the analysis of DC3b outputs). 
+
+
+
+\vskip 0.3in
+\leftline{\bf A.2 The Basics of Photometric Calibration}
+
+The previous section details how counts are produced in the camera; this section discusses how we
+can calibrate those counts (which vary from observation to observation and source to source) to 
+standardized, calibrated flux measurements for each source in each observation. This is best
+served by introducing a new quantity $\phi_b(\lambda)$, the normalized system response function in bandpass $b$,
+\begin{equation}
+\label{PhiDef}
+   \phi_b(\lambda) \equiv {\lambda^{-1} S^{atm}(\lambda) S_b^{sys}(\lambda) \over \int_0^\infty {\lambda^{-1} S^{atm}(\lambda) S_b^{sys}(\lambda) d\lambda}}.
+\end{equation}
+By definition, $\int_0^\infty {\phi_b(\lambda) d\lambda}=1$. It is implied that
+$\phi_b(\lambda)$ is a function of position.  
+
+In addition to providing a compact description for in-band flux (see Eq.~\ref{eqn:Finband} 
+below), $\phi_b(\lambda)$ conveniently separates the
+shape of the response function from its normalization, a separation
+that maps well onto the baseline calibration strategy.  The shape of 
+the response functions will be determined by direct measurements
+using auxiliary instrumentation, while the normalization (also known
+as `gray' zeropoint calibration) will be determined self-consistently
+using the main survey data for non-variable main-sequence stars. 
+
+For given $S^{atm}(\lambda)$ and $S_b^{sys}(\lambda)$, the in-band flux can be 
+defined as 
+\begin{equation}
+\label{eqn:Finband}
+                          F_b = \int_0^\infty {F_\nu(\lambda) \phi_b(\lambda) d\lambda}.
+\end{equation}
+The normalization of $F_b$ corresponds to the top of the atmosphere,
+but of course the atmosphere affects the wavelength dependence (or shape) of 
+$\phi_b(\lambda)$. Note that gray effects do not change $F_b$, due to the 
+definition of $\phi_b(\lambda)$ as the normalized system response.  For
+convenience, we define corresponding magnitude as 
+\begin{equation}
+\label{eqn:maginband}
+                    m_b = -2.5\log_{10}(F_b / F_{AB}),
+\end{equation}
+with the flux normalization $F_{AB} = 3631$ Jy (1 Jansky = 10$^{-26}$ W Hz$^{-1}$ m$^{-2}$ = 
+10$^{-23}$ erg cm$^{-2}$s$^{-1}$ Hz$^{-1}$). 
+
+
+Even for perfectly calibrated data, and for perfectly non-variable 
+stars, $F_b$ will vary between different observations since in general 
+$\phi_b(\lambda)$ will vary due to changing atmospheric conditions  
+(and perhaps due to hardware aging or changes in the instrumental setup). 
+To correct $F_b$ for changes in $\phi_b(\lambda)$ (e.g. to derive
+standardized fluxes or to measure low-amplitude variability), both 
+the shape of the source
+SED, $F_\nu(\lambda)$, and $\phi_b(\lambda)$ must be known. 
+For example, a source with a flat SED, $F_\nu(\lambda)=F_o$, would 
+have $F_b = F_o$ regardless of the wavelength dependence of $\phi_b(\lambda)$, 
+but a power-law SED with more flux in the blue than the red results in a larger
+$F_b$ when $\phi_b(\lambda)$ also has a higher response in the blue.
+
+The aim of photometric calibration is to calibrate the counts $C_b(alt,az,x,y)$ measured in each observation 
+to the corresponding $F_b$, and to provide a measurement of $\phi_b(\lambda)$ for that particular observation. 
+Such pairs of ($F_b$,$\phi_b(\lambda)$) will represent the main photometric products --- the 
+survey will collect $\sim$ 10$^{13}$ such pairs over a ten year period: one pair for each observation 
+($\sim$1000) of each source ($\sim10^{10}$). 
+
+
+
+
+
+
+
+\end{document} 
+
+
