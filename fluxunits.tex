@@ -1,7 +1,7 @@
 \documentclass{emulateapj}
 
 
-\slugcomment{DRAFT Version 0.2 of Aug 17, 2017}
+\slugcomment{DRAFT Version 0.3 of Sep 10, 2017}
 
 
 \newcommand\x         {\hbox{$\times$}}
@@ -36,27 +36,55 @@
 A linear measure of flux is preferred for LSST catalogs. This document
 provides some technical detail about this issue and proposes to adopt
 nano-Jansky (1 nJy $=10^{-35} \,\, {\rm W m^{-2} Hz^{-1}}$) as the standard 
-LSST flux unit.  
+LSST flux unit. Difficulties associated with homogenizing broad-band
+flux measurements to a uniform system are also discussed in some detail. 
 \end{abstract}
+
 
 
 \section{Introduction} 
 
 A linear measure of flux, not logarithmic magnitude scale, is preferred
 for LSST catalogs (e.g. forced fluxes can be negative due to stochastic
-background fluctuations). The choice of a particular flux unit is often
-conflated with issues of the interpretation of broad-band photometry 
-and systematic uncertainties in photometric calibration. This document
-summarizes most important technical details about these issues and 
-proposes to adopt nano-Jansky as the standard LSST flux unit. 
+background fluctuations). LSST flux measurements will be obtained using
+time-dependent and focal plane position-dependent broad photometric 
+bandpasses. As a crucial undesired consequence of these bandpass variations
+and the broadness of the bandpasses, even intrinsically constant sources may 
+display flux variability at the level exceeding LSST's photometric precision 
+and accuracy requirements. 
+
+At the precision level of these requirements ($\sim1\%$), it is indeed {\it 
+mathematically impossible} to define a natural LSST photometric system (or 
+natural magnitudes): in order to homogenize broad-band flux measurements 
+to a uniform system, {\it assumptions about the shapes of the source spectral 
+energy distribution must be made!}
+
+These fundamental issues are often conflated with discussions of differences 
+between AB and Vega photometric systems, and choices of magnitudes vs. linear
+fluxes, sometimes yielding confusing statements.  This document aims to clarify
+some of the ensuing confusion by summarizing most important technical details
+regarding interpretation of broad-band photometry and systematic uncertainties in 
+photometric calibration. It also proposes to adopt nano-Jansky as the standard 
+LSST flux unit. 
 
 Relevant technical discussion is provided in \S 2. Readers familiar 
 with broad-band photometry and photometric calibration can skip
-directly to \S 3, where  arguments are laid out for adopting nanoJansky 
-as the LSST flux unit. 
+directly to \S 3, where the proposal for adopting nano-Jansky 
+as the LSST flux unit is discussed and summarized. 
+
 
 
 \section{What flux will LSST measure?} 
+
+The complexity of the interpretation of measured and calibrated flux depends on 
+the required flux precision and accuracy, as well as the width of the photometric bandpass.
+Were the photometric bandpasses infinitely narrow, or if the precision and accuracy 
+requirements could be relaxed by a factor of a few, much of discussion presented in this 
+document would be moot. 
+
+In this Section we review definitions of the basic quantities and briefly discuss some of the 
+consequences of the broad photometric bandpasses. A more detailed discussion is 
+available in the LSST document LSE-180 (Level 2 Photometric Calibration for the LSST Survey). 
 
 
 \subsection{CCDs count photons} 
@@ -78,7 +106,7 @@ source counts, $C_b$ (in ADU), are proportional to
 with the constant of proportionality increasing with effective collecting area and exposure 
 time (index $b$ stands for ``bandpass''). The fact that CCDs count photons is reflected in
 the integration of the photon flux, $N_\nu$; in case of a calorimeter, for example, energy 
-flux would be integrated.
+flux (i.e. the specific flux, see the next subsection) would be integrated.
  
 The integration in eq.~\ref{Nnu} is over frequency $\nu$ because the photon flux $N_\nu$ 
 is expressed per unit frequency. However, the running variable can be either  $\nu$ or 
@@ -93,7 +121,11 @@ that an equivalent form of  eq.~\ref{Nnu} is
 
 CCDs count photons but (unfortunately) don't record the photons' wavelength/frequency/energy.
 Nevertheless, it is possible to relate (calibrate) the measured source counts to energy flux -- though
-with a few important caveats, as described below. 
+with a few important caveats, as described below. It is important to emphasize, however, that the main 
+source of complexity for LSST photometry is the combination of its required exquisite precision
+and substantial photometric bandpass width, rather than the fact that CCDs count photons. If LSST
+used a calorimeter device instead, the problems of measurement homogenization to account for varying 
+bandpass would persist. 
 
  
 
@@ -133,12 +165,26 @@ eq.~\ref{Nnu2} can be rewritten as
          C_b\propto \int F_\nu(\lambda) \, S_b(\lambda) \, \lambda^{-1} \, d\lambda. 
 \end{equation}
 
- 
+If instead of CCDs which measure $N_\nu$, LSST used a calorimeter device that measures $F_\nu$, 
+eq.~\ref{Nnu3} would have a $\lambda^{-2}$ term instead of $\lambda^{-1}$.  Again, most calibration
+difficulties are not due to the fact that CCDs count photons but come from the fact that $S_b(\lambda)$
+is a broad function, it is variable, and the shape of source spectral energy distribution is not known 
+a priori. 
+
 \subsection{Astronomical magnitudes \label{sec:tradmag}} 
 
-Counts $C_b$ have to be calibrated to be useful for science.  Traditional astronomical 
-magnitudes are reported as a measurement relative to some judiciously chosen celestial 
-calibration source (e.g., Vega),
+Counts $C_b$ have to be calibrated to be useful for science. Ideally, the reported flux measurements 
+of a non-variable source should be constant, up to random noise. For illustration, the three most common
+use cases are 
+\begin{enumerate} 
+\item How can we produce the crispest possible color-magnitude and color-color diagrams?
+\item How can we best recognize a low-amplitude variable source?
+\item Given a model flux $F_\nu(\lambda)$ (possibly as a function of time), how can it be best 
+          compared to measurements? 
+\end{enumerate} 
+
+Traditional astronomical magnitudes are reported as a measurement relative to some judiciously 
+chosen celestial calibration source (e.g., Vega),
 \begin{equation}
 \label{Vegamag}
                m^{Vega}_b = -2.5\log_{10}\left({C_b \over C^{calib}_{b}}\right),
@@ -146,14 +192,15 @@ calibration source (e.g., Vega),
 where $C_b^{calib}$ is the counts measurement for a calibration star\footnote{In practice, 
 as opposed to this formal definition, multiple stars are used to derive the calibration 
 zeropoint, and the measurement noise is taken into account as well.} obtained with the 
-same system as $C_b$.
+same system (that is, with the same $S_b(\lambda)$ up to a normalization constant) as $C_b$.
 
 The throughput $S_b(\lambda)$ cannot be assumed constant because of varying observing 
 conditions (even if the system and Earth's atmosphere are assumed constant in time, 
 $S_b(\lambda)$ will depend on airmass). As $S_b(\lambda)$ varies, $m^{Vega}_b$
 would vary too (beyond random measurement noise) even for a non-variable source (unless
-it has exactly the same spectral energy distribution as the calibration source). This
-clearly undesireable effect is in practice corrected for using the so-called ``color terms''. 
+it has exactly the same spectral energy distribution as the calibration source)! 
+
+This clearly undesireable effect is in practice corrected for using the so-called ``color terms''. 
 Therefore, eq.~\ref{Vegamag} is deceivingly simple and the need to {\it assume} the 
 shape of the source's spectral energy distribution, as discussed below, {\it cannot be avoided}. 
 Further details can be found in LSE-180 (see Section 4.1). 
@@ -191,13 +238,18 @@ are dimensionless probabilities (numbers between 0 and 1).
 
 As discussed above, the $\lambda^{-1}$ factor in eq.~\ref{PhiDef} reflects the fact that CCDs are 
 photon-counting devices: it comes from the conversion of energy per unit frequency
-into the number of photons per unit wavelength. 
+into the number of photons per unit wavelength. If a calorimeter was used instead, $\lambda^{-1}$
+term would turn into $\lambda^{-2}$ but all the problems caused by integration over the 
+broad bandpass would remain. 
 
 Note that the product $\phi_b(\lambda) d\lambda$ is dimensionless; it acts in eq.~\ref{Fb} as a 
 dimensionless weighting function and the unit for $F_b$ is {\it same} as for $F_\nu$
 (by construction).  In other words, eq.~\ref{Fb} doesn't represent ``integration under the 
-$F_\nu$ curve'' -- instead, $F_b$ is a ``weighted average'' of $F_\nu$ ($N_\nu$ is 
-``integrated under the curve'', not $F_\nu$). 
+$F_\nu$ curve'' -- instead, $F_b$ is a ``weighted average'' of $F_\nu$. While details of the 
+``weighting function''  $\phi_b(\lambda)$ depend on the device properties, the fact
+that $F_\nu$ is a ``weighted'' quantity is purely a consequence of the broad bandpass. 
+Note that only in the case of an infinitely narrow bandpass, the measured quantity would 
+really be the specific flux $F_\nu$ at some well defined wavelength. 
 
 Had we chosen to use $F_\lambda$ instead of $F_\nu$, an analog
 to eq.~\ref{Fb} would have been 
@@ -222,7 +274,7 @@ standardization correction for bandpass variation (see eq.~\ref{FbStd}) vanishes
 \subsection{The curse of broad-band flux} 
 
 There are a few consequences of the finite width of $\phi_b(\lambda)$ that need to be 
-emphasized (and are {\it not} the result of the specific choice for flux calibration). 
+(re)emphasized (and are {\it not} the result of the specific choice for flux calibration). 
 
 Even for a temporally non-variable $F_\nu(\lambda)$,  $F_b$ will vary if 
 $\phi_b(\lambda)$ varies (even if the atmospheric and system properties
@@ -241,10 +293,12 @@ wavelength $\lambda_o$. Then we can compute standardized flux as
 \label{FbStd}
 F^{std}_b =  F_b \, {\int{f_\nu(\lambda)  \phi^{std}_b(\lambda) d\lambda }  \over   \int{ f_\nu(\lambda) \phi_b(\lambda) d\lambda }}. 
 \end{equation}
-Traditionally, corrections to the standard system are called {\it color terms}. Historically,
-they were obtained empirically (typically as linear functions of source color and airmass)
-rather than by using eq.~\ref{FbStd}. Assuming main-sequence stars and standard atmosphere, 
-plausible variations of airmass induce variations of $F_b$ around $F^{std}_b$ of a few percent. 
+Traditionally, corrections to the standard system (the ratio of two integrals in eq.~\ref{FbStd}) 
+are called {\it color terms}. Historically, they were obtained empirically (typically as approximating
+linear functions of source color and airmass) rather than by using eq.~\ref{FbStd}. Assuming 
+main-sequence stars and standard atmosphere, plausible variations of airmass induce variations 
+of $F_b$ around $F^{std}_b$ of a few percent (i.e. several times larger than the photometric 
+precision requirements). 
 
 Without knowing, or assuming, $f_\nu(\lambda)$, it is {\it mathematically impossible}  to 
 standardize measurements $F_b$ -- this is the ``curse'' of broad-band fluxes
@@ -252,8 +306,7 @@ standardize measurements $F_b$ -- this is the ``curse'' of broad-band fluxes
 had we chosen $F_b^\ast$ instead of $F_b$, the standardization correction would vanish for
 $f_\nu(\lambda) = \lambda^2$, that is, for $f_\lambda(\lambda)$ = constant). 
 This ``curse'' cannot be avoided whatever is the flux calibration choice (i.e. $F_\nu$ vs. $F_\lambda$);
-the ``problem'' is that CCDs don't measure integrated flux -- they count photons and
-don't record the photons' wavelength.
+the ``problem'' is the finite width of the photometric bandpass. 
 
 
 \subsection{Standardized fluxes} 
@@ -348,7 +401,7 @@ AB magnitudes defined as
 where $F_{AB}$ = 3631 Jy. The same expression applies to $F^{std}_b$, or any other flux. 
 The choice of normalization flux $F_{AB}$ results in correspondence between AB magnitudes
 and Vega magnitudes in the Johnson's $V$ band (i.e. approximately, 3631 Jy is the flux of Vega 
-in the V band).  
+in the standard V band).  
 
 
 \subsection{Relationship between AB magnitudes and Vega magnitudes} 
@@ -359,22 +412,78 @@ $F_b/F^{calib}_{b} = C_b / C_b^{calib}$ and
 \label{VegamagAB}
                m^{Vega}_b = -2.5\log_{10}\left({F_b \over F^{calib}_{b}}\right). 
 \end{equation}
-When $F^{calib}_{b}$ is available, transformations between $m^{AB}_b$ and $m^{Vega}_b$
-are straightforward and effectively there is no practical difference between the approaches.
-When $F^{calib}_{b}$ is unavailable, $m^{Vega}_b$ are simply relative flux measurements
-and cannot be transformed to an absolute flux scale. 
+When $F^{calib}_{b}$ is available (e.g. Vega's flux of 3631 Jy in the V band), transformations between 
+$m^{AB}_b$ and $m^{Vega}_b$ are straightforward and effectively there is no practical difference 
+between the approaches. When $F^{calib}_{b}$ is unavailable, $m^{Vega}_b$ are simply relative flux measurements
+and cannot be transformed to an absolute flux scale implied by AB magnitudes. 
 
 
 \section{The choice of flux unit}  
 
 Most astronomical surveys, especially space-based surveys and surveys
 at wavelengths other than optical, used Jansky as the flux unit.  One notable
-exception is SDSS, which used maggies. As discussed below, there appears
-to be no major advantage for LSST to adopt maggies over Jansky. Therefore,
-it is better to adopt the more commonly used Jansky. 
+exception is SDSS, which used maggies (see Appendix A). There appears to be
+no advantage for LSST to adopt maggies over Jansky, and for consistency
+with the practice adopted by numerous other astronomical catalogs, it seems
+better to adopt Jansky. 
 
 
-\subsection{The curious case of maggies} 
+\subsection{Jansky as the preferred flux unit for LSST  \label{sec:Jy}} 
+
+There is fundamentally no difference between the flux measurements discussed
+here and any other physical measurement that is subject to random and systematic
+uncertainties. It is rather common to report both types of measurement uncertainties
+in physical sciences. Indeed, the LSST  Science Requirements Document (Section 3.3.4)
+explicitly addresses the issue of systematic uncertainties in photometry and
+introduces the separation of ``internal absolute'' calibration accuracy 
+from ``external absolute'' ” calibration accuracy and from the offset from the
+overall flux scale. The deviation of the LSST system from a perfect AB system
+(that is, the systematic error in calibrating the flux scale to correspond to Jansky)  
+$\Delta_b$, is expressed relative to the fiducial band (chosen to be the $r$ band)
+as \begin{equation}
+             \Delta_b = \Delta_r + \Delta_{br}, 
+\end{equation}
+(eq.~9 from the SRD), where $\Delta_r$ describes overall systematic uncertainty 
+in the LSST flux scale calibration (a single number for the whole survey). The 
+``band-to-band zeropoint errors'' $\Delta_{br}$ are thus decoupled from the overall 
+``gray scale'' offset $\Delta_{r}$, which minimizes error covariances. Similarly to SDSS, 
+a variety of methods will be used to assess likely values of $\Delta_{br}$ and 
+$\Delta_r$ for each LSST Data Release. 
+
+
+\subsection{Summary} 
+
+In summary, it is proposed here to calibrate LSST fluxes to a physical scale (e.g. using
+Gaia catalogs), adopt nano-Jansky (nJy) as the LSST flux unit, and report the best available
+estimates of $\Delta_{br}$ and $\Delta_r$ with each LSST Data Release. In particular, 
+$\Delta_r$ will describe the systematic flux uncertainty --  the discrepancy between an 
+ideal flux scale in Jansky and ``Jansky'' scale reported by LSST. 
+
+For the faint fluxes probed by LSST, a more convenient unit is nano-Jansky (nJy). 
+The AB magnitude values of 27.5 (fiducial coadded image depth)  and 24.5 (fiducial 
+single-image depth) correspond to 36.3 nJy and 575 nJy. 
+
+Lastly, it  will need to be strongly emphasized to the users that LSST measurements are 
+fundamentally broad-band fluxes, and not ``a flux-at-a-wavelength'', despite using the 
+unit for the specific flux. In addition, sufficient information will have to be provided 
+in data products (catalogs and documentation) so that the entire calibration process from 
+source counts in ADU to fluxes in nano-Jansky can be easily understood and back-engineered
+if desired. 
+
+
+\vskip 0.0in
+\newpage
+{\it Acknowledgments:} this document has greatly benefited from discussions between
+the LSST Project Science Team members and Tim Axelrod, Michael Blanton, David 
+Burke, Arjun Dey, Mark Dickinson, Doug Finkbeiner, Lynne Jones,  Jeff Newman, 
+John Parejko, David Schlegel, and Peter Yoachim,
+
+
+
+
+\appendix
+
+\section{A. The curious case of maggies} 
 
 In analogy with eqs.~\ref{Vegamag} and \ref{ABmag}, magnitudes can be defined\footnote{
 See https://www.sdss3.org/dr8/algorithms/magnitudes.php} as 
@@ -395,7 +504,7 @@ flux measured in units of 3631 Jy,
            {\rm maggie} = {{\rm flux \, (Jy)} \over {\rm 3631 \, Jy}}. 
 \end{equation} 
 In practice (e.g. SDSS), a more convenient
-quantity is nano-maggie, which is flux measured in units of 3631 nanoJy.
+quantity is nano-maggie, which is flux measured in units of 3631 nJy.
 
 In case of traditional magnitudes (see \S\ref{sec:tradmag}), maggies are a 
 relative flux measure
@@ -421,7 +530,8 @@ that $F_o$ from eq.~\ref{maggie2} is 3631 Jy), and thus
 implicitly to Jansky (and sometimes explicitly, e.g., when constructing
 multi-wavelength spectral energy distributions). SDSS Project curates a 
 list of five best estimates of the systematic flux errors in the $ugriz$ 
-bands introduced by this conversion. 
+bands introduced by this conversion. These errors are analogous to 
+quantities $\Delta_b$ discussed in Section~\ref{sec:Jy}. 
  
 It is sometimes claimed that maggies have the benefit of not pretending 
 to exactly correspond to physical units (Jy). This somewhat philosophical
@@ -429,37 +539,12 @@ advantage was not born in practice because of the immediate users'
 conversion to AB magnitudes mentioned above. 
 
 
-\subsection{Case for Jansky as the preferred flux unit} 
-
-There is fundamentally no difference between the flux measurements discussed
-here and any other physical measurement that is subject to random and systematic
-uncertainties. It is rather common to report both types of measurement uncertainties
-in physical sciences. Indeed, the LSST  Science Requirements Document (Section 3.3.4)
-explicitly addresses the issue of systematic uncertainties in photometry and
-introduces the separation of ``internal absolute'' calibration accuracy 
-from ``external absolute'' ” calibration accuracy and from the offset from the
-overall flux scale. The deviation of the LSST system from a perfect AB system
-(that is, the systematic error in calibrating the flux scale to correspond to Jansky)  
-$\Delta_b$, is expressed relative to the fiducial band (chosen to be the $r$ band)
-as \begin{equation}
-             \Delta_b = \Delta_r + \Delta_{br}, 
-\end{equation}
-(eq.~9 from the SRD), where $\Delta_r$ describes overall systematic uncertainty 
-in the LSST flux scale calibration (a single number for the whole survey). The 
-``band-to-band zeropoint errors'' $\Delta_{br}$ are thus decoupled from the overall 
-``gray scale'' offset $\Delta_{r}$, which minimizes error covariances. Similarly to SDSS, 
-a variety of methods will be used to assess likely values of $\Delta_{br}$ and 
-$\Delta_r$ for each LSST Data Release. 
+\section{B. Discussion} 
 
 The following few points that often came up in previous discussions are worth reiterating: 
 \begin{enumerate}
-\item There isn't that much difference between the two options; in particular,  the key 
-decision is to report physical flux on a linear scale and whether the flux unit is Jy 
-or 3631 Jy is of secondary importance.  Since Jy is widely used in astronomy, it seems 
-wise to give it preference over much less common maggies. For the faint fluxes
-probed by LSST, a more convenient unit is nanoJansky (nJy). The AB magnitude 
-values of 27.5 (fiducial coadded image depth)  and 24.5 (fiducial single-image depth) 
-correspond to 36.3 nJy and 575 nJy. 
+\item There isn't that much difference between using Jansky and maggies (when expressed
+on an absolute flux scale): the key decision is to report physical flux on a linear scale.
 \item Irrespective of which flux unit is chosen, the changes of the photometric 
 calibration zeropoints will affect whatever is reported, whether it is maggie, $mag^{AB}$, 
 $mag^{Vega}$, or nJy, as long as it is implied that physical flux is reported. Only if
@@ -472,28 +557,16 @@ LSST SRD mandates that reported fluxes are calibrated on an absolute flux scale.
 \item ``But: we are measuring broad-band flux, and not the specific flux!''  Well, 
 yes, this is an unfortunate fact. However, it is not relevant for the maggie vs. Jy discussion. 
 It is impossible (mathematically!) to relate these two flux measures without knowing 
-the source SED, whether we use magnitudes, maggies or Jy! 
-\item When an estimate of the source SED is available, the transformation from
+the source SED, whether we use relative or absolute flux calibration and magnitudes, 
+maggies or Jy! 
+\item Once an estimate of the source SED is available or assumed, the transformation from
 the broad-band flux to the specific flux is dimensionless and thus obviously independent 
-of the choice for flux units (again, the broad band flux vs. the specific flux issues do not provide
-arguments for maggie vs. Jy discussion).
+of the choice for flux units and relative vs. absolute calibration choice (again, the broad band 
+flux vs. the specific flux issues do not provide arguments for maggie vs. Jy discussion).
 \end{enumerate}
 
-In summary, the proposal is to calibrate LSST fluxes to a physical scale (e.g. using
-Gaia catalogs), adopt nJy as the flux unit, and report the best available estimates of 
-$\Delta_{br}$ and $\Delta_r$ with each LSST Data Release. In particular, $\Delta_r$ 
-will describe the systematic flux uncertainty --  the discrepancy between an ideal 
-flux scale in Jansky and ``Jansky'' scale reported by LSST. Lastly, it  will need to be
-strongly emphasized to the users that LSST measurements are fundamentally broad-band 
-fluxes, and not ``a flux-at-a-wavelength'', despite using the unit for the specific flux. 
 
 
-\vskip 0.0in
-\newpage
-{\it Acknowledgments:} this document has greatly benefited from discussions between
-the LSST Project Science Team members and Tim Axelrod, Michael Blanton, David 
-Burke, Arjun Dey, Mark Dickinson, Doug Finkbeiner, Lynne Jones,  Jeff Newman, 
-John Parejko, David Schlegel, and Peter Yoachim,
 
 
 \end{document} 
