@@ -1,56 +1,56 @@
-\documentclass{emulateapj}
+\documentclass[DM,lsstdraft,toc,usenatbib]{lsstdoc}
 
+% Package imports go here
+\usepackage{amsmath}	% Advanced maths commands
+\usepackage{amssymb}
+\usepackage{gensymb}  % degree symbol 
+\usepackage{natbib}  % bibliography
+\usepackage{cprotect} 
+% Local commands go here
 
-\slugcomment{DRAFT Version 0.3 of Sep 10, 2017}
+%% Journal abbreviations
+%\bibliographystyle{aasjournal}
 
+\title[LSST Flux Units]{On the Choice of LSST Flux Units} 
 
-\newcommand\x         {\hbox{$\times$}}
-\newcommand\othername {\hbox{$\dots$}}
-\def\eq#1{\begin{equation} #1 \end{equation}}
-\def\eqarray#1{\begin{eqnarray} #1 \end{eqnarray}}
-\def\eqarraylet#1{\begin{mathletters}\begin{eqnarray} #1 
-                  \end{eqnarray}\end{mathletters}}
-\def\mic              {\hbox{$\mu{\rm m}$}}
-\def\about            {\hbox{$\sim$}}
-\def\Mo               {\hbox{$M_{\odot}$}}
-\def\Lo               {\hbox{$L_{\odot}$}}
-\def\comm#1           {{\tt (COMMENT: #1)}}
-\def\kms   {\hbox{km s$^{-1}$}}
-
-\usepackage{graphicx}
-\usepackage{xspace}
-
-\usepackage[usenames]{color} 
-%\newcommand{\B}[1]{{\color{blue} #1}}
-%\newcommand{\R}[1]{{\color{red} #1}}
-\newcommand{\G}[1]{{\color{red} #1}}
-\newcommand{\B}[1]{{#1}}
-\newcommand{\R}[1]{{\color{red}}}
-
-\begin{document}
-\title{On the Choice of LSST Flux Units (*** draft ***)} 
 \author{\v{Z}eljko Ivezi\'{c} and the LSST Project Science Team} 
 
-
-\begin{abstract}
+\setDocRef{Document-27758}
+\date{\today}
+\setDocRevision{v1.1}
+\setDocStatus{finalized}
+\setDocAbstract{%
 A linear measure of flux is preferred for LSST catalogs. This document
-provides some technical detail about this issue and proposes to adopt
-nano-Jansky (1 nJy $=10^{-35} \,\, {\rm W m^{-2} Hz^{-1}}$) as the standard 
-LSST flux unit. Difficulties associated with homogenizing broad-band
+provides technical details about this preference in support of the LSST Project
+Science Team's decision to adopt nano-jansky (1 nJy $=10^{-35} \,\, {\rm W m^{-2} Hz^{-1}}$) 
+as the standard LSST flux unit. Difficulties associated with homogenizing broad-band
 flux measurements to a uniform system are also discussed in some detail. 
-\end{abstract}
+}
 
+% Change history defined here. Will be inserted into
+% correct place with \maketitle
+% OLDEST FIRST: VERSION, DATE, DESCRIPTION, OWNER NAME
+\setDocChangeRecord{%
+\addtohist{1}{2018-02-12}{First released version.}{\v{Z}eljko Ivezi\'{c}}
+}
+
+\begin{document}
+
+% Create the title page
+% Table of contents will be added automatically if "toc" class option
+% is used.
+\maketitle
 
 
 \section{Introduction} 
 
 A linear measure of flux, not logarithmic magnitude scale, is preferred
-for LSST catalogs (e.g. forced fluxes can be negative due to stochastic
+for LSST catalogs (e.g., forced fluxes can be negative due to stochastic
 background fluctuations). LSST flux measurements will be obtained using
 time-dependent and focal plane position-dependent broad photometric 
 bandpasses. As a crucial undesired consequence of these bandpass variations
-and the broadness of the bandpasses, even intrinsically constant sources may 
-display flux variability at the level exceeding LSST's photometric precision 
+and the broadness of the bandpasses, even intrinsically constant non-variable
+sources may display flux variability at the level exceeding LSST's photometric precision 
 and accuracy requirements. 
 
 At the precision level of these requirements ($\sim1\%$), it is indeed {\it 
@@ -64,12 +64,12 @@ between AB and Vega photometric systems, and choices of magnitudes vs. linear
 fluxes, sometimes yielding confusing statements.  This document aims to clarify
 some of the ensuing confusion by summarizing most important technical details
 regarding interpretation of broad-band photometry and systematic uncertainties in 
-photometric calibration. It also proposes to adopt nano-Jansky as the standard 
-LSST flux unit. 
+photometric calibration. It also provides supporting material for the LSST Project
+Science Team's decision to adopt nano-jansky as the standard LSST flux unit. 
 
 Relevant technical discussion is provided in \S 2. Readers familiar 
 with broad-band photometry and photometric calibration can skip
-directly to \S 3, where the proposal for adopting nano-Jansky 
+directly to \S 3, where justification for adopting nano-jansky 
 as the LSST flux unit is discussed and summarized. 
 
 
@@ -137,7 +137,7 @@ W m$^{-2}$ Hz$^{-1}$ (= 10$^{3}$ erg cm$^{-2}$ s$^{-1}$). Because astronomical
 fluxes are small, the IAU defined in 1973 a more convenient unit\footnote{The
 name honors radio astronomer Karl Jansky. Papers about the 3$^{rd}$ Cambridge 
 catalog of quasars published in 1950's already used $10^{-26} \, {\rm W m^{-2} Hz^{-1}}$
-as a standard flux unit (without calling it Jansky).},  Jansky (Jy): 
+as a standard flux unit (without calling it jansky).},  jansky (Jy): 
 \begin{equation}
             1 \, {\rm Jy} = 10^{-26} \,\, {\rm W m^{-2} Hz^{-1}}.
 \end{equation} 
@@ -351,7 +351,7 @@ errors because $\lambda_{eff}$ is a function of $f_\nu(\lambda)$, and thus there
 is no universal value of $\lambda_{eff}$ applicable to all sources. 
 
 
-\subsection{Calibration of counts to get fluxes} 
+\subsection{Calibration of counts to fluxes} 
 
 Image processing pipelines, more precisely object measurement pipelines/algorithms,
 will produce counts, $C_b$ (together with $\phi_b$). It is assumed that all the relevant 
@@ -414,21 +414,21 @@ $F_b/F^{calib}_{b} = C_b / C_b^{calib}$ and
 \end{equation}
 When $F^{calib}_{b}$ is available (e.g. Vega's flux of 3631 Jy in the V band), transformations between 
 $m^{AB}_b$ and $m^{Vega}_b$ are straightforward and effectively there is no practical difference 
-between the approaches. When $F^{calib}_{b}$ is unavailable, $m^{Vega}_b$ are simply relative flux measurements
+between the two approaches. When $F^{calib}_{b}$ is unavailable, $m^{Vega}_b$ are simply relative flux measurements
 and cannot be transformed to an absolute flux scale implied by AB magnitudes. 
 
 
 \section{The choice of flux unit}  
 
 Most astronomical surveys, especially space-based surveys and surveys
-at wavelengths other than optical, used Jansky as the flux unit.  One notable
+at wavelengths other than optical, used jansky as the flux unit.  One notable
 exception is SDSS, which used maggies (see Appendix A). There appears to be
-no advantage for LSST to adopt maggies over Jansky, and for consistency
+no advantage for LSST to adopt maggies over jansky, and for consistency
 with the practice adopted by numerous other astronomical catalogs, it seems
-better to adopt Jansky. 
+better to adopt jansky. 
 
 
-\subsection{Jansky as the preferred flux unit for LSST  \label{sec:Jy}} 
+\subsection{Adopting jansky as the preferred flux unit for LSST  \label{sec:Jy}} 
 
 There is fundamentally no difference between the flux measurements discussed
 here and any other physical measurement that is subject to random and systematic
@@ -438,7 +438,7 @@ explicitly addresses the issue of systematic uncertainties in photometry and
 introduces the separation of ``internal absolute'' calibration accuracy 
 from ``external absolute'' ” calibration accuracy and from the offset from the
 overall flux scale. The deviation of the LSST system from a perfect AB system
-(that is, the systematic error in calibrating the flux scale to correspond to Jansky)  
+(that is, the systematic error in calibrating the flux scale to correspond to jansky)  
 $\Delta_b$, is expressed relative to the fiducial band (chosen to be the $r$ band)
 as \begin{equation}
              \Delta_b = \Delta_r + \Delta_{br}, 
@@ -453,21 +453,21 @@ $\Delta_r$ for each LSST Data Release.
 
 \subsection{Summary} 
 
-In summary, it is proposed here to calibrate LSST fluxes to a physical scale (e.g. using
-Gaia catalogs), adopt nano-Jansky (nJy) as the LSST flux unit, and report the best available
+It is advocated here to calibrate LSST fluxes to a physical scale (e.g. using
+Gaia catalogs), adopt jansky (Jy) as the LSST flux unit, and report the best available
 estimates of $\Delta_{br}$ and $\Delta_r$ with each LSST Data Release. In particular, 
 $\Delta_r$ will describe the systematic flux uncertainty --  the discrepancy between an 
-ideal flux scale in Jansky and ``Jansky'' scale reported by LSST. 
+ideal flux scale in jansky and ``jansky'' scale reported by LSST. 
 
-For the faint fluxes probed by LSST, a more convenient unit is nano-Jansky (nJy). 
+For the faint fluxes probed by LSST, a convenient unit is nano-jansky (nJy). 
 The AB magnitude values of 27.5 (fiducial coadded image depth)  and 24.5 (fiducial 
 single-image depth) correspond to 36.3 nJy and 575 nJy. 
 
-Lastly, it  will need to be strongly emphasized to the users that LSST measurements are 
+Lastly, we will need to strongly emphasize to the users that LSST measurements are 
 fundamentally broad-band fluxes, and not ``a flux-at-a-wavelength'', despite using the 
 unit for the specific flux. In addition, sufficient information will have to be provided 
 in data products (catalogs and documentation) so that the entire calibration process from 
-source counts in ADU to fluxes in nano-Jansky can be easily understood and back-engineered
+source counts in ADU to fluxes in nano-jansky can be easily understood and back-engineered
 if desired. 
 
 
@@ -475,15 +475,13 @@ if desired.
 \newpage
 {\it Acknowledgments:} this document has greatly benefited from discussions between
 the LSST Project Science Team members and Tim Axelrod, Michael Blanton, David 
-Burke, Arjun Dey, Mark Dickinson, Doug Finkbeiner, Lynne Jones,  Jeff Newman, 
-John Parejko, David Schlegel, and Peter Yoachim,
-
-
+Burke, Arjun Dey, Mark Dickinson, Doug Finkbeiner, Tim Jenness, Lynne Jones,  Jeff Newman, 
+John Parejko, David Schlegel, and Peter Yoachim. 
 
 
 \appendix
 
-\section{A. The curious case of maggies} 
+\section{The curious case of maggies} 
 
 In analogy with eqs.~\ref{Vegamag} and \ref{ABmag}, magnitudes can be defined\footnote{
 See https://www.sdss3.org/dr8/algorithms/magnitudes.php} as 
@@ -527,7 +525,7 @@ point-spread function, etc.) -- photometric zeropoints are only one of
 many calibration factors. Indeed, it turned out that in practice most 
 SDSS users would simply convert maggies to AB magnitudes (by assuming
 that $F_o$ from eq.~\ref{maggie2} is 3631 Jy), and thus
-implicitly to Jansky (and sometimes explicitly, e.g., when constructing
+implicitly to jansky (and sometimes explicitly, e.g., when constructing
 multi-wavelength spectral energy distributions). SDSS Project curates a 
 list of five best estimates of the systematic flux errors in the $ugriz$ 
 bands introduced by this conversion. These errors are analogous to 
@@ -539,12 +537,12 @@ advantage was not born in practice because of the immediate users'
 conversion to AB magnitudes mentioned above. 
 
 
-\section{B. Discussion} 
+\section{Discussion} 
 
 The following few points that often came up in previous discussions are worth reiterating: 
 \begin{enumerate}
-\item There isn't that much difference between using Jansky and maggies (when expressed
-on an absolute flux scale): the key decision is to report physical flux on a linear scale.
+\item There isn't that much difference between using maggies (when expressed on an 
+absolute flux scale) and jansky: the key decision is to report physical flux on a linear scale.
 \item Irrespective of which flux unit is chosen, the changes of the photometric 
 calibration zeropoints will affect whatever is reported, whether it is maggie, $mag^{AB}$, 
 $mag^{Vega}$, or nJy, as long as it is implied that physical flux is reported. Only if
@@ -567,8 +565,8 @@ flux vs. the specific flux issues do not provide arguments for maggie vs. Jy dis
 
 
 
-
-
 \end{document} 
 
  
+
+
