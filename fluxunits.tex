@@ -106,7 +106,7 @@ source counts, $C_b$ (in ADU), are proportional to
 with the constant of proportionality increasing with effective collecting area and exposure
 time (index $b$ stands for ``bandpass''). The fact that CCDs count photons is reflected in
 the integration of the photon flux, $N_\nu$; in case of a calorimeter, for example, energy
-flux (i.e. the specific flux, see the next subsection) would be integrated.
+flux (i.e., the specific flux, see the next subsection) would be integrated.
 
 The integration in eq.~\ref{Nnu} is over frequency $\nu$ because the photon flux $N_\nu$
 is expressed per unit frequency. However, the running variable can be either  $\nu$ or
@@ -297,7 +297,7 @@ Traditionally, corrections to the standard system (the ratio of two integrals in
 are called \textit{color terms}. Historically, they were obtained empirically (typically as approximating
 linear functions of source color and airmass) rather than by using eq.~\ref{FbStd}. Assuming
 main-sequence stars and standard atmosphere, plausible variations of airmass induce variations
-of $F_b$ around $F^{std}_b$ of a few percent (i.e. several times larger than the photometric
+of $F_b$ around $F^{std}_b$ of a few percent (i.e., several times larger than the photometric
 precision requirements).
 
 Without knowing, or assuming, $f_\nu(\lambda)$, it is \textit{mathematically impossible}  to
@@ -313,7 +313,7 @@ the ``problem'' is the finite width of the photometric bandpass.
 
 For each flux measurement, LSST will report both $F_b$ and $\phi_b$ (with $\phi^{std}_b(\lambda)$
 pre-defined and always known). There is also need to report standardized flux
-computed using eq.~\ref{FbStd} (e.g. to help users construct color-color and color-magnitude
+computed using eq.~\ref{FbStd} (e.g., to help users construct color-color and color-magnitude
 diagrams, or to search for variable sources). There are at least two options for choosing $f_\nu(\lambda)$:
 i) assume a flat SED ($F^{std}_b =  F_b$, i.e. effectively no correction is applied), and ii) assume
 the best possible estimate of object's SED, using available LSST color measurements and possibly
@@ -321,10 +321,10 @@ other information.
 
 Neither choice is perfect: the first choice, while simple, does not account for the variation of $F_b$ around
 $F^{std}_b$ due to changes of $\phi_b$ (except in case of flat SED), while the second choice
-can be grossly incorrect (e.g. when SED type is incorrectly chosen, such as stellar SED instead
+can be grossly incorrect (e.g., when SED type is incorrectly chosen, such as stellar SED instead
 of quasar or supernova SED). Therefore, it is important to enable users i) to undo whatever default
 flux standardization correction was used, and ii) to easily re-do the computation with a different choice
-of the spectral energy distribution (e.g. for multiple hypothesis testing, such as distinguishing
+of the spectral energy distribution (e.g., for multiple hypothesis testing, such as distinguishing
 ``star'', ``quasar'', and ``supernova'' SEDs, or galaxy SEDs of different intrinsic types and at
 different redshift). The current baseline LSST plan is option ii).
 
@@ -339,7 +339,7 @@ for $F_b$ using eq.~\ref{Fb}
 \end{equation}
 and then compare $F^{model}_b$ to measurement $F_b$.
 When measurements $F_b$ have already been standardized as $F^{std}_b$,
-this data vs. model comparison (e.g. photometric redshift estimation) can
+this data vs. model comparison (e.g., photometric redshift estimation) can
 suffer from systematic errors when SED shape, $f_\nu(\lambda)$,  assumed
 for flux standardization differs from the shape of $F_\nu^{model}(\lambda)$,
 \textit{even when} $\phi_b(\lambda)$ was substituted by $\phi^{std}_b(\lambda)$.
@@ -367,7 +367,7 @@ sky if all $C_b$ were ``reduced to the same system'' using self-calibration).
 
 A set of calibration stars will be available to estimate $\alpha$: for these stars
 we (assume that we) will know broad-band flux in an arbitrary calibration bandpass
-$\phi_{calib}(\lambda)$ (e.g. in Gaia's bandpasses)
+$\phi_{calib}(\lambda)$ (e.g., in Gaia's bandpasses)
 \begin{equation}
 \label{FbCalib}
              F_{calib} = \int{F_\nu(\lambda) \phi_{calib}(\lambda) d\lambda}.
@@ -400,7 +400,7 @@ AB magnitudes defined as
 \end{equation}
 where $F_{AB}$ = 3631 Jy. The same expression applies to $F^{std}_b$, or any other flux.
 The choice of normalization flux $F_{AB}$ results in correspondence between AB magnitudes
-and Vega magnitudes in the Johnson's $V$ band (i.e. approximately, 3631 Jy is the flux of Vega
+and Vega magnitudes in the Johnson's $V$ band (i.e., approximately, 3631 Jy is the flux of Vega
 in the standard V band).
 
 
@@ -412,7 +412,7 @@ $F_b/F^{calib}_{b} = C_b / C_b^{calib}$ and
 \label{VegamagAB}
                m^{Vega}_b = -2.5\log_{10}\left({F_b \over F^{calib}_{b}}\right).
 \end{equation}
-When $F^{calib}_{b}$ is available (e.g. Vega's flux of 3631 Jy in the V band), transformations between
+When $F^{calib}_{b}$ is available (e.g., Vega's flux of 3631 Jy in the V band), transformations between
 $m^{AB}_b$ and $m^{Vega}_b$ are straightforward and effectively there is no practical difference
 between the two approaches. When $F^{calib}_{b}$ is unavailable, $m^{Vega}_b$ are simply relative flux measurements
 and cannot be transformed to an absolute flux scale implied by AB magnitudes.
@@ -453,7 +453,7 @@ $\Delta_r$ for each LSST Data Release.
 
 \subsection{Summary}
 
-It is advocated here to calibrate LSST fluxes to a physical scale (e.g. using
+It is advocated here to calibrate LSST fluxes to a physical scale (e.g., using
 Gaia catalogs), adopt jansky (Jy) as the LSST flux unit, and report the best available
 estimates of $\Delta_{br}$ and $\Delta_r$ with each LSST Data Release. In particular,
 $\Delta_r$ will describe the systematic flux uncertainty --  the discrepancy between an
@@ -502,7 +502,7 @@ flux measured in units of 3631 Jy,
 \label{eq:defmaggie}
            \mathrm{maggie} = {\mathrm{flux \, (Jy)} \over \mathrm{3631 \, Jy}}.
 \end{equation}
-In practice (e.g. SDSS), a more convenient
+In practice (e.g., SDSS), a more convenient
 quantity is nano-maggie, which is flux measured in units of 3631 nJy.
 
 In case of traditional magnitudes (see \S\ref{sec:tradmag}), maggies are a
@@ -516,7 +516,7 @@ Maggies were introduced as an alternative flux unit in order to emphasize
 that zeropoints for astronomical flux calibration change often -- and
 presumably much more often than the actual counts measurement. Such
 was the case of SDSS, where the sky was imaged essentially once and with
-a precision better then the accuracy of calibration photometry (i.e. at
+a precision better then the accuracy of calibration photometry (i.e., at
 the bright end systematic photometric uncertainties were larger than
 random uncertainties). It was anticipated that photometric zeropoints
 would eventually improve and the dataset recalibrated.  But it needs to
@@ -547,7 +547,7 @@ absolute flux scale) and jansky: the key decision is to report physical flux on 
 \item Irrespective of which flux unit is chosen, the changes of the photometric
 calibration zeropoints will affect whatever is reported, whether it is maggie, $mag^{AB}$,
 $mag^{Vega}$, or nJy, as long as it is implied that physical flux is reported. Only if
-truly relative measures of flux are reported (e.g. with respect to Vega, but without knowing
+truly relative measures of flux are reported (e.g., with respect to Vega, but without knowing
 what calibrated Vega fluxes really are), will magnitudes (but not fluxes in maggies or
 nJy) stay unchanged. However, in this case rather ugly details are hidden (e.g., how
 exactly was the relative flux calibrated and how stable is the flux scale), and in the context
