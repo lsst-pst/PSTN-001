@@ -22,7 +22,7 @@
 \setDocAbstract{%
 A linear measure of flux is preferred for LSST catalogs. This document
 provides technical details about this preference in support of the LSST Project
-Science Team's decision to adopt nano-jansky (1 nJy $=10^{-35} \,\, {\rm W m^{-2} Hz^{-1}}$)
+Science Team's decision to adopt nano-jansky (1 nJy $=10^{-35} \,\, \mathrm{W m^{-2} Hz^{-1}}$)
 as the standard LSST flux unit. Difficulties associated with homogenizing broad-band
 flux measurements to a uniform system are also discussed in some detail.
 }
@@ -53,10 +53,10 @@ and the broadness of the bandpasses, even intrinsically constant non-variable
 sources may display flux variability at the level exceeding LSST's photometric precision
 and accuracy requirements.
 
-At the precision level of these requirements ($\sim1\%$), it is indeed {\it
-mathematically impossible} to define a natural LSST photometric system (or
+At the precision level of these requirements ($\sim1\%$), it is indeed
+\textit{mathematically impossible} to define a natural LSST photometric system (or
 natural magnitudes): in order to homogenize broad-band flux measurements
-to a uniform system, {\it assumptions about the shapes of the source spectral
+to a uniform system, \textit{assumptions about the shapes of the source spectral
 energy distribution must be made!}
 
 These fundamental issues are often conflated with discussions of differences
@@ -94,7 +94,7 @@ by the overall atmosphere plus system throughput,  $S_b(\lambda)$ (defined as th
 that a photon with wavelength $\lambda$, or frequency $\nu=c/\lambda$,  will be
 transmitted through Earth's atmosphere and through the observing apparatus, and converted
 into an electron, including the effects of both optics, sensors and all other potential losses).
-This quantity is {\it not}  defined per unit energy, or per unit wavelength (or frequency):
+This quantity is \textit{not}  defined per unit energy, or per unit wavelength (or frequency):
 it is simply a dimensionless probability -- a number between 0 and 1.
 
 Given a flux of photons per unit time, area and frequency interval, $N_\nu$, the
@@ -132,14 +132,14 @@ bandpass would persist.
 \subsection{Definition of the specific flux}
 
 Let us first  define $F_\nu$: the specific flux (flux per unit frequency, $\nu$) of an
-object {\it at the top} of Earth's atmosphere. The SI units for $F_\nu$ are
+object \textit{at the top} of Earth's atmosphere. The SI units for $F_\nu$ are
 W m$^{-2}$ Hz$^{-1}$ (= 10$^{3}$ erg cm$^{-2}$ s$^{-1}$). Because astronomical
 fluxes are small, the IAU defined in 1973 a more convenient unit\footnote{The
 name honors radio astronomer Karl Jansky. Papers about the 3$^{rd}$ Cambridge
-catalog of quasars published in 1950's already used $10^{-26} \, {\rm W m^{-2} Hz^{-1}}$
+catalog of quasars published in 1950's already used $10^{-26} \, \mathrm{W m^{-2} Hz^{-1}}$
 as a standard flux unit (without calling it jansky).},  jansky (Jy):
 \begin{equation}
-            1 \, {\rm Jy} = 10^{-26} \,\, {\rm W m^{-2} Hz^{-1}}.
+            1 \, \mathrm{Jy} = 10^{-26} \,\, \mathrm{W m^{-2} Hz^{-1}}.
 \end{equation}
 
 The specific flux can also be defined per unit wavelength, $F_\lambda$, using energy
@@ -201,8 +201,8 @@ would vary too (beyond random measurement noise) even for a non-variable source 
 it has exactly the same spectral energy distribution as the calibration source)!
 
 This clearly undesireable effect is in practice corrected for using the so-called ``color terms''.
-Therefore, eq.~\ref{Vegamag} is deceivingly simple and the need to {\it assume} the
-shape of the source's spectral energy distribution, as discussed below, {\it cannot be avoided}.
+Therefore, eq.~\ref{Vegamag} is deceivingly simple and the need to \textit{assume} the
+shape of the source's spectral energy distribution, as discussed below, \textit{cannot be avoided}.
 Further details can be found in LSE-180 (see Section 4.1).
 
 
@@ -215,7 +215,7 @@ defined by
 \label{Fb}
               F_b = \int{F_\nu(\lambda) \phi_b(\lambda) d\lambda},
 \end{equation}
-where $F_\nu(\lambda)$ is the specific flux of an object {\it at the top} of the atmosphere,
+where $F_\nu(\lambda)$ is the specific flux of an object \textit{at the top} of the atmosphere,
 and $\phi_b(\lambda)$ is the normalized system response for the given band.'' This
 expression follows directly from eq.~\ref{Nnu3}. The calibration of measured $C_b$ to obtain
 $F_b$ is addressed further below.
@@ -230,7 +230,7 @@ where $S_b(\lambda)$ is the overall atmosphere + system throughput.  It is defin
 \label{SDef}
          S_b(\lambda) = S_b^{sys}(\lambda) \times S_b^{atm}(\lambda),
 \end{equation}
-where $S_b^{atm}(\lambda)$ is the {\it probability} that a photon
+where $S_b^{atm}(\lambda)$ is the \textit{probability} that a photon
 with wavelength $\lambda$ will be transmitted through the atmosphere, and
 $S_b^{sys}(\lambda)$ is the probability that the transmitted photon will be
 converted into an electron by the system (optics, CCDs). Again, these quantities
@@ -243,7 +243,7 @@ term would turn into $\lambda^{-2}$ but all the problems caused by integration o
 broad bandpass would remain.
 
 Note that the product $\phi_b(\lambda) d\lambda$ is dimensionless; it acts in eq.~\ref{Fb} as a
-dimensionless weighting function and the unit for $F_b$ is {\it same} as for $F_\nu$
+dimensionless weighting function and the unit for $F_b$ is \textit{same} as for $F_\nu$
 (by construction).  In other words, eq.~\ref{Fb} doesn't represent ``integration under the
 $F_\nu$ curve'' -- instead, $F_b$ is a ``weighted average'' of $F_\nu$. While details of the
 ``weighting function''  $\phi_b(\lambda)$ depend on the device properties, the fact
@@ -274,15 +274,15 @@ standardization correction for bandpass variation (see eq.~\ref{FbStd}) vanishes
 \subsection{The curse of broad-band flux}
 
 There are a few consequences of the finite width of $\phi_b(\lambda)$ that need to be
-(re)emphasized (and are {\it not} the result of the specific choice for flux calibration).
+(re)emphasized (and are \textit{not} the result of the specific choice for flux calibration).
 
 Even for a temporally non-variable $F_\nu(\lambda)$,  $F_b$ will vary if
 $\phi_b(\lambda)$ varies (even if the atmospheric and system properties
 are unchanged, variation of observing airmass can change $\phi_b(\lambda)$).
 In order to standardize measurements to a
 common standard system, one in which $F_b$ of a temporally non-variable
-source would not vary (modulo random noise),  we need to define a {\it standard}
-normalized system response, $\phi^{std}_b(\lambda)$. In addition, we must know the {\it shape}
+source would not vary (modulo random noise),  we need to define a \textit{standard}
+normalized system response, $\phi^{std}_b(\lambda)$. In addition, we must know the \textit{shape}
 of the source spectral energy distribution (SED), $f_\nu(\lambda)$, defined by
 \begin{equation}
         F_\nu(\lambda) = F_o \, f_\nu(\lambda),
@@ -294,13 +294,13 @@ wavelength $\lambda_o$. Then we can compute standardized flux as
 F^{std}_b =  F_b \, {\int{f_\nu(\lambda)  \phi^{std}_b(\lambda) d\lambda }  \over   \int{ f_\nu(\lambda) \phi_b(\lambda) d\lambda }}.
 \end{equation}
 Traditionally, corrections to the standard system (the ratio of two integrals in eq.~\ref{FbStd})
-are called {\it color terms}. Historically, they were obtained empirically (typically as approximating
+are called \textit{color terms}. Historically, they were obtained empirically (typically as approximating
 linear functions of source color and airmass) rather than by using eq.~\ref{FbStd}. Assuming
 main-sequence stars and standard atmosphere, plausible variations of airmass induce variations
 of $F_b$ around $F^{std}_b$ of a few percent (i.e. several times larger than the photometric
 precision requirements).
 
-Without knowing, or assuming, $f_\nu(\lambda)$, it is {\it mathematically impossible}  to
+Without knowing, or assuming, $f_\nu(\lambda)$, it is \textit{mathematically impossible}  to
 standardize measurements $F_b$ -- this is the ``curse'' of broad-band fluxes
 (note that in the special case of a flat SED, $f_\nu(\lambda)$ = constant, $F^{std}_b =  F_b$;
 had we chosen $F_b^\ast$ instead of $F_b$, the standardization correction would vanish for
@@ -342,7 +342,7 @@ When measurements $F_b$ have already been standardized as $F^{std}_b$,
 this data vs. model comparison (e.g. photometric redshift estimation) can
 suffer from systematic errors when SED shape, $f_\nu(\lambda)$,  assumed
 for flux standardization differs from the shape of $F_\nu^{model}(\lambda)$,
-{\it even when} $\phi_b(\lambda)$ was substituted by $\phi^{std}_b(\lambda)$.
+\textit{even when} $\phi_b(\lambda)$ was substituted by $\phi^{std}_b(\lambda)$.
 
 Flux measurements ($F_b$ or $F^{std}_b$) are often interpreted as corresponding to
 $F_\nu(\lambda_{eff})$, at some effective wavelength, $\lambda_{eff}$, and compared
@@ -473,7 +473,7 @@ if desired.
 
 \vskip 0.0in
 \newpage
-{\it Acknowledgments:} this document has greatly benefited from discussions between
+\textit{Acknowledgments:} this document has greatly benefited from discussions between
 the LSST Project Science Team members and Tim Axelrod, Michael Blanton, David
 Burke, Arjun Dey, Mark Dickinson, Doug Finkbeiner, Tim Jenness, Lynne Jones,  Jeff Newman,
 John Parejko, David Schlegel, and Peter Yoachim.
@@ -487,19 +487,19 @@ In analogy with eqs.~\ref{Vegamag} and \ref{ABmag}, magnitudes can be defined\fo
 See https://www.sdss3.org/dr8/algorithms/magnitudes.php} as
 \begin{equation}
 \label{maggie}
-               m \equiv - 2.5\log_{10}\left({\rm maggie}\right),
+               m \equiv - 2.5\log_{10}\left(\mathrm{maggie}\right),
 \end{equation}
 where ``maggie'' is the source flux expressed in some arbitrary
 units,
 \begin{equation}
 \label{maggie2}
-               {\rm maggie} \equiv {F_b \over F_o}.
+               \mathrm{maggie} \equiv {F_b \over F_o}.
 \end{equation}
 In case of AB magnitudes, eq.~\ref{ABmag} implies that maggie is
 flux measured in units of 3631 Jy,
 \begin{equation}
 \label{eq:defmaggie}
-           {\rm maggie} = {{\rm flux \, (Jy)} \over {\rm 3631 \, Jy}}.
+           \mathrm{maggie} = {\mathrm{flux \, (Jy)} \over \mathrm{3631 \, Jy}}.
 \end{equation}
 In practice (e.g. SDSS), a more convenient
 quantity is nano-maggie, which is flux measured in units of 3631 nJy.
@@ -508,7 +508,7 @@ In case of traditional magnitudes (see \S\ref{sec:tradmag}), maggies are a
 relative flux measure
 \begin{equation}
 \label{maggie3}
-    {\rm maggie} \equiv {C_b  \over C_b^{calib}} = {F_b  \over F_b^{calib}}.
+    \mathrm{maggie} \equiv {C_b  \over C_b^{calib}} = {F_b  \over F_b^{calib}}.
 \end{equation}
 
 Maggies were introduced as an alternative flux unit in order to emphasize
