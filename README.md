@@ -1,2 +1,2 @@
 # fluxunits
-A memo arguing to adopt Jansky as the LSST flux unit. 
+A memo arguing to adopt nano-jansky as the LSST flux unit. 
