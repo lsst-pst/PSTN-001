@@ -11,7 +11,7 @@ script:
   # Compile PDF using containerized lsst-texmf
   - "docker run --rm -v `pwd`:/workspace -w /workspace lsstsqre/lsst-texmf:latest sh -c 'make'"
   # Deploy website. See https://github.com/lsst-sqre/lander for CLI options
-  - "lander --pdf fluxunits.pdf --upload --lsstdoc fluxunits.tex --env=travis --ltd-product pstn-001"
+  - "lander --pdf PSTN-001.pdf --upload --lsstdoc PSTN-001.tex --env=travis --ltd-product pstn-001"
 env:
   global:
     - secure: "M6hfzzO7JKTOdBHpQAmYUk+csmJdXFzymLgfUDFgECFdilAk76HFIhbi1/LrHDJ3178woK7NJkJ7lp5kqxN1Lc8kgrd1ZD65U4AQPYiORJv7GP2KzYGy32kbNbZ4G7CQrwYwJNCrQZfPJ6YLdXD/NqzREoBTm2+FL505SvCj/hnaZHsEpVAf4FKncoUzZ82TMhxNPSirHqlTh0LnXnN+HCK30sa3NW9C+0CRPkgAmMD+W5oaCXrtnyBgblvnA6yR9UnZV09+TQ0Zv4JpOTeZYDBvelsbr/xp55LJ5kYfUGpvBRANYL3ArGMepaMXZmpopTpwrf7ReeEtiI7dv+GE6erzXxZx9aw9svF13DwClZRsLESWBLSGtA934NDlj7ZM0j8oIFhcdxcw3zN3C0EUSIkZ95fcliZcZqTy3uPRp0oCPPfbNigkT989XQ2anJ9IsVCu7A/HlAA5HBtjtxBH+vQ+6AtFllZJ5XV4dRj1MYst1LLFWD0AWUp3LSatoe/fdnCPuVuMlp5fYiXdE3z2/vMjR9vVk1VToxL/UolJlYj9H4CWZA0IJhQ5l0AaQ0Qg9LbvKecUkN5KH/rMoKX1SmLqmnZ7bMS1lmd8iHYPDgGZjjM2tIE1G6uZKZYAbtleHbaehBev6CUd2q876wRn7OPPaybwifxqFdEBXQBSN1s="
